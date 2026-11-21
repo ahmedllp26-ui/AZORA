@@ -221,7 +221,8 @@ function renderCart(){let sub=0;document.getElementById("cartContent").innerHTML
 function changeQty(id,d){let x=cart.find(x=>x.id===id),p=products.find(x=>x.id===id);if(!x)return;if(d>0&&x.qty>=p.qty)return alert("لا توجد كمية إضافية");x.qty+=d;if(x.qty<=0)cart=cart.filter(y=>y.id!==id);save();count();renderCart()}
 function removeItem(id){cart=cart.filter(x=>x.id!==id);save();count();renderCart()}
 function togglePaymentDetails(){const selected=document.getElementById("pay").value;document.getElementById("mastercardDetails").classList.toggle("hidden",selected!=="تحويل MasterCard")}
-function copyMastercardNumber(){const value="2493569640";if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(value).then(()=>alert("تم نسخ رقم البطاقة")).catch(()=>alert("رقم البطاقة: "+value))}else{alert("رقم البطاقة: "+value)}}\nasync function checkout(){
+function copyMastercardNumber(){const value="2493569640";if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(value).then(()=>alert("تم نسخ رقم البطاقة")).catch(()=>alert("رقم البطاقة: "+value))}else{alert("رقم البطاقة: "+value)}}
+async function checkout(){
  if(!cart.length)return alert("السلة فارغة");
  let name=document.getElementById("buyer").value.trim(),ph=document.getElementById("phone").value.trim(),area=document.getElementById("area").value.trim(),landmark=document.getElementById("landmark").value.trim();
  if(!name||!ph||!area||!landmark)return alert("أكمل الاسم ورقم الهاتف والمحافظة والمنطقة وأقرب نقطة دالّة");
