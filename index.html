@@ -173,7 +173,7 @@ async function managerLogin(event){
     }
     currentUser=cred.user;
     managerUnlocked=true;
-    document.getElementById("adminNavButton").classList.remove("hidden");
+    document.getElementById("adminNavButton").classList.remove("hidden");document.getElementById("adminNavButton").style.display="inline-flex";
     document.getElementById("managerGate").classList.add("hidden");
     await loadCloudData();
     show("admin");
@@ -294,12 +294,12 @@ document.addEventListener("click",e=>{if(!e.target.closest(".sortWrap")){const m
 auth.onAuthStateChanged(async user=>{
  currentUser=user;
  const adminButton=document.getElementById("adminNavButton");
- if(!user){managerUnlocked=false;adminButton.classList.add("hidden");return;}
+ if(!user){managerUnlocked=false;adminButton.classList.add("hidden");adminButton.style.display="none";return;}
  try{
    const a=await db.collection("admin").doc(user.uid).get();
    if(a.exists&&a.data().role==="admin"){
      managerUnlocked=true;
-     adminButton.classList.remove("hidden");
+     adminButton.classList.remove("hidden");adminButton.style.display="inline-flex";
      await loadCloudData();
    }else{
      managerUnlocked=false;
