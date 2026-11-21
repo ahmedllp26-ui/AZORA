@@ -288,9 +288,16 @@ async function loadCloudData(){
  renderAdmin();
 }
 function adminTab(id,button){document.querySelectorAll(".admin-pane").forEach(p=>p.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");document.querySelectorAll(".admin-tab").forEach(b=>b.classList.remove("active"));if(button)button.classList.add("active");}
+async function confirmOrderPayment(id){
+ const order=orders.find(o=>o.id===id);if(!order||order.paymentConfirmed)return;
+ try{await db.collection("orders").doc(String(id)).update({paymentConfirmed:true,status:"تم تأكيد الدفع"});order.paymentConfirmed=true;order.status="تم تأكيد الدفع";renderAdmin();}
+ catch(e){alert("تعذر تأكيد الدفع: "+e.message);}
+}
 async function setOrderDelivery(id,checked){
- const status=checked?"جار التوصيل":"جديد";
- try{await db.collection("orders").doc(String(id)).update({deliveryStarted:checked,status});const order=orders.find(o=>o.id===id);if(order){order.deliveryStarted=checked;order.status=status;}renderAdmin();}
+ const order=orders.find(o=>o.id===id);
+ if(checked&&order&&order.pay==="تحويل MasterCard"&&!order.paymentConfirmed){alert("أكد وصول التحويل أولاً قبل بدء التوصيل.");renderAdmin();return;}
+ const status=checked?"جار التوصيل":(order&&order.pay==="تحويل MasterCard"?"تم تأكيد الدفع":"جديد");
+ try{await db.collection("orders").doc(String(id)).update({deliveryStarted:checked,status});if(order){order.deliveryStarted=checked;order.status=status;}renderAdmin();}
  catch(e){alert("تعذر تحديث حالة الطلب: "+e.message);renderAdmin();}
 }
 function renderAdmin(){
@@ -300,7 +307,14 @@ function renderAdmin(){
  document.getElementById("shipFee").value=shipping;
  document.getElementById("stockSummary").textContent="إجمالي القطع المتوفرة: "+products.reduce((s,p)=>s+Number(p.qty||0),0)+" قطعة.";
  document.getElementById("manage").innerHTML=products.map(p=>`<div class="manageRow"><div><b>${(p.images&&p.images.length)||p.image?"🖼️":p.emoji||"📦"} ${p.name}</b><div class="small">${p.cat} · بيع ${money(p.sell)} · شراء ${money(p.buy)} · المخزون ${p.qty}</div></div><div class="actions"><button class="secondary" onclick="editPrice('${p.id}')">تعديل</button><button class="danger" onclick="deleteProduct('${p.id}')">حذف</button></div></div>`).join("")||"لا توجد منتجات";
- document.getElementById("orderList").innerHTML=orders.map(o=>{const started=!!(o.deliveryStarted||o.status==="جار التوصيل");return '<article class="order-card"><div class="order-card-head"><div><b>طلب #'+String(o.id).slice(-6)+'</b><span class="order-state '+(started?"in-delivery":"new-order")+'">'+(started?"جار التوصيل":"طلب جديد")+'</span></div><b class="order-total">'+money(o.total)+'</b></div><div class="order-fields"><div class="order-field"><small>الاسم</small><strong>'+(o.name||"—")+'</strong></div><div class="order-field"><small>رقم الهاتف</small><strong dir="ltr">'+(o.phone||"—")+'</strong></div><div class="order-field"><small>المحافظة</small><strong>'+(o.province||"—")+'</strong></div><div class="order-field"><small>المنطقة</small><strong>'+(o.area||o.address||"—")+'</strong></div><div class="order-field full"><small>أقرب نقطة دالّة</small><strong>'+(o.landmark||"—")+'</strong></div></div><div class="order-card-foot"><span class="small">'+(o.pay||"الدفع عند الاستلام")+'</span><label class="delivery-check"><input type="checkbox" '+(started?"checked":"")+' onchange="setOrderDelivery(\''+o.id+'\',this.checked)"><span class="checkmark">✓</span><b>اكتمل التعبئة وبدأ التوصيل</b></label></div></article>';}).join("")||'<div class="empty">لا توجد طلبات حتى الآن.</div>';
+  document.getElementById("orderList").innerHTML=orders.map(o=>{
+   const started=!!(o.deliveryStarted||o.status==="جار التوصيل");
+   const pending=o.pay==="تحويل MasterCard"&&!o.paymentConfirmed;
+   const state=started?"جار التوصيل":pending?"بانتظار تأكيد الدفع":(o.paymentConfirmed&&o.pay==="تحويل MasterCard"?"تم تأكيد الدفع":"طلب جديد");
+   const paymentAction=pending?'<button class="secondary" type="button" onclick="confirmOrderPayment(\''+o.id+'\')">تأكيد وصول التحويل</button>':"";
+   const deliveryControl='<label class="delivery-check"><input type="checkbox" '+(started?"checked":"")+(pending?" disabled":"") +' onchange="setOrderDelivery(\''+o.id+'\',this.checked)"><span class="checkmark">✓</span><b>اكتمل التعبئة وبدأ التوصيل</b></label>';
+   return '<article class="order-card"><div class="order-card-head"><div><b>طلب #'+String(o.id).slice(-6)+'</b><span class="order-state '+(started?"in-delivery":"new-order")+'">'+state+'</span></div><b class="order-total">'+money(o.total)+'</b></div><div class="order-fields"><div class="order-field"><small>الاسم</small><strong>'+(o.name||"—")+'</strong></div><div class="order-field"><small>رقم الهاتف</small><strong dir="ltr">'+(o.phone||"—")+'</strong></div><div class="order-field"><small>المحافظة</small><strong>'+(o.province||"—")+'</strong></div><div class="order-field"><small>المنطقة</small><strong>'+(o.area||o.address||"—")+'</strong></div><div class="order-field full"><small>أقرب نقطة دالّة</small><strong>'+(o.landmark||"—")+'</strong></div></div><div class="order-card-foot"><span class="small">'+(o.pay||"الدفع عند الاستلام")+'</span><div class="actions">'+paymentAction+deliveryControl+'</div></div></article>';
+  }).join("")||'<div class="empty">لا توجد طلبات حتى الآن.</div>';
 }
 document.addEventListener("click",e=>{if(!e.target.closest(".sortWrap")){const m=document.getElementById("sortMenu");if(m)m.classList.remove("open");const t=document.getElementById("sortTrigger");if(t)t.setAttribute("aria-expanded","false")}});drawChips();renderProducts();count();
 auth.onAuthStateChanged(async user=>{
