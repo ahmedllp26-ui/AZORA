@@ -293,12 +293,22 @@ function renderAdmin(){
 document.addEventListener("click",e=>{if(!e.target.closest(".sortWrap")){const m=document.getElementById("sortMenu");if(m)m.classList.remove("open");const t=document.getElementById("sortTrigger");if(t)t.setAttribute("aria-expanded","false")}});drawChips();renderProducts();count();
 auth.onAuthStateChanged(async user=>{
  currentUser=user;
- if(user){
-   try{
-     const a=await db.collection("admin").doc(user.uid).get();
-     if(a.exists&&a.data().role==="admin"){managerUnlocked=true;await loadCloudData();}
-     else {managerUnlocked=false;}
-   }catch(e){console.warn(e);}
+ const adminButton=document.getElementById("adminNavButton");
+ if(!user){managerUnlocked=false;adminButton.classList.add("hidden");return;}
+ try{
+   const a=await db.collection("admin").doc(user.uid).get();
+   if(a.exists&&a.data().role==="admin"){
+     managerUnlocked=true;
+     adminButton.classList.remove("hidden");
+     await loadCloudData();
+   }else{
+     managerUnlocked=false;
+     adminButton.classList.add("hidden");
+   }
+ }catch(e){
+   managerUnlocked=false;
+   adminButton.classList.add("hidden");
+   console.warn(e);
  }
 });
 loadProducts().catch(e=>console.warn("Firebase products:",e));
