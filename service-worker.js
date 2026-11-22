@@ -1,4 +1,4 @@
-const CACHE_NAME = "maswaki-shell-v4";
+const CACHE_NAME = "maswaki-shell-v5";
 
 const APP_SHELL = [
   "./",
