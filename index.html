@@ -160,6 +160,17 @@ body.view-favorites #shop .grid{margin-top:16px}
  .top .top-sort{grid-column:2!important;grid-row:1!important;width:100%!important;min-width:0!important}
  .top .cart-icon-btn{position:absolute!important;top:10px!important;inset-inline-end:10px!important;width:42px!important;height:42px!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:20!important}
 }
+
+/* Compact hero to give the product catalog more breathing room */
+.hero{padding:13px 18px!important;margin:10px 0 12px!important;border-radius:16px!important;gap:12px!important}
+.hero h1{font-size:clamp(20px,3vw,28px)!important;margin:5px 0!important}
+.hero p{font-size:12px!important;line-height:1.5!important;margin-bottom:8px!important}
+.hero .orb{width:72px!important;height:72px!important;font-size:34px!important}
+.hero button{padding:7px 11px!important;font-size:12px!important}
+.head{margin:16px 0 9px!important}
+.chips{gap:7px!important;padding:2px 0 10px!important}
+.chip{padding:7px 12px!important;font-size:12px!important}
+@media(max-width:600px){.hero{padding:11px 13px!important;min-height:0!important}.hero .orb{width:58px!important;height:58px!important;font-size:28px!important}.hero h1{font-size:19px!important}.hero p{font-size:11px!important}.hero button{padding:6px 9px!important}}
 </style></head>
 <body>
 <div id="managerGate" class="hidden">
@@ -219,9 +230,9 @@ const storage = firebase.storage();
 let currentUser = null;
 let cloudReady = false;
 
-const cats=["الكل","سماعات وإيربودز","شواحن","هواتف","كفرات وحمايات","كيبلات","باور بانك","إكسسوارات أخرى"];
-const seed=[{id:1,name:"سماعة لاسلكية Pro",cat:cats[1],sell:35000,buy:22000,qty:8,old:42000,emoji:"🎧"},{id:2,name:"شاحن سريع USB‑C",cat:cats[2],sell:18000,buy:11000,qty:15,old:0,emoji:"🔌"},{id:3,name:"هاتف ذكي",cat:cats[3],sell:325000,buy:290000,qty:3,old:0,emoji:"📱"},{id:4,name:"كفر حماية شفاف",cat:cats[4],sell:9000,buy:3500,qty:24,old:12000,emoji:"📲"},{id:5,name:"كيبل Type‑C",cat:cats[5],sell:7000,buy:2500,qty:30,old:0,emoji:"🔋"},{id:6,name:"باور بانك 20000mAh",cat:cats[6],sell:42000,buy:30000,qty:6,old:48000,emoji:"🔋"}];
-let products=[],cart=JSON.parse(localStorage.getItem("mas_cart")||"[]"),favorites=JSON.parse(localStorage.getItem("mas_favorites")||"[]"),favoritesOnly=false,orders=[],shipping=5000,active="الكل",sortMode="new";
+const cats=["عرض الكل","إلكترونيات","أجهزة منزل","أجهزة المطبخ","أجهزة العناية","منتجات العناية","ألعاب","أدوات السيارات","عدد وأدوات","أدوات رياضية","أثاث","إنارة وإضاءة","أدوات منزلية","أدوات مطبخ"];
+const seed=[{id:1,name:"سماعة لاسلكية Pro",cat:cats[1],sell:35000,buy:22000,qty:8,old:42000,emoji:"🎧"},{id:2,name:"شاحن سريع USB‑C",cat:cats[1],sell:18000,buy:11000,qty:15,old:0,emoji:"🔌"},{id:3,name:"هاتف ذكي",cat:cats[1],sell:325000,buy:290000,qty:3,old:0,emoji:"📱"},{id:4,name:"كفر حماية شفاف",cat:cats[1],sell:9000,buy:3500,qty:24,old:12000,emoji:"📲"},{id:5,name:"كيبل Type‑C",cat:cats[1],sell:7000,buy:2500,qty:30,old:0,emoji:"🔋"},{id:6,name:"باور بانك 20000mAh",cat:cats[1],sell:42000,buy:30000,qty:6,old:48000,emoji:"🔋"}];
+let products=[],cart=JSON.parse(localStorage.getItem("mas_cart")||"[]"),favorites=JSON.parse(localStorage.getItem("mas_favorites")||"[]"),favoritesOnly=false,orders=[],shipping=5000,active="عرض الكل",sortMode="new";
 const money=n=>Number(n||0).toLocaleString("en-US")+" د.ع",save=()=>{localStorage.setItem("mas_cart",JSON.stringify(cart))};
 let managerUnlocked=false,programMargin=5000;
 function openStoreSettings(){if(!managerUnlocked){show("admin");return;}show("admin");adminTab("settingsAdmin",document.querySelector('.admin-tab[onclick*="settingsAdmin"]'));}
@@ -283,7 +294,7 @@ function setSort(value,label){sortMode=value;document.getElementById("sortLabel"
 function renderProducts(){
  const raw=document.getElementById("search").value, q=normalizeSearch(raw), sort=sortMode;
  const clear=document.getElementById("clearSearch");if(clear)clear.classList.toggle("hidden",!raw);
- let a=products.filter(p=>{const searchable=normalizeSearch([p.name,p.cat,p.description,p.details,p.keywords].filter(Boolean).join(" "));return (active==="الكل"||p.cat===active)&&(!q||searchable.includes(q))&&(!favoritesOnly||favorites.includes(String(p.id)));});
+ let a=products.filter(p=>{const searchable=normalizeSearch([p.name,p.cat,p.description,p.details,p.keywords].filter(Boolean).join(" "));const legacyElectronics=["سماعات وإيربودز","شواحن","هواتف","كفرات وحمايات","كيبلات","باور بانك","إكسسوارات أخرى"];const categoryMatch=active==="عرض الكل"||(active==="إلكترونيات"?(p.cat==="إلكترونيات"||legacyElectronics.includes(p.cat)):p.cat===active);return categoryMatch&&(!q||searchable.includes(q))&&(!favoritesOnly||favorites.includes(String(p.id)));});
  if(sort==="low")a.sort((x,y)=>x.sell-y.sell);if(sort==="high")a.sort((x,y)=>y.sell-x.sell);if(sort==="az")a.sort((x,y)=>String(x.name||"").localeCompare(String(y.name||""),"ar"));
  document.getElementById("products").innerHTML=a.map(p=>`<article class="product"><button class="heart ${favorites.includes(String(p.id))?"on":""}" aria-label="${favorites.includes(String(p.id))?"إزالة من المفضلة":"إضافة إلى المفضلة"}" title="${favorites.includes(String(p.id))?"إزالة من المفضلة":"إضافة إلى المفضلة"}" onclick="toggleFavorite('${p.id}')">${favorites.includes(String(p.id))?"♥":"♡"}</button><div class="pic">${(p.images&&p.images.length)||p.image?`<img src="${(p.images&&p.images[0])||p.image}" alt="${p.name}" loading="lazy">`:p.emoji||"📦"}</div><div class="pbody"><h3>${p.name}</h3><div class="muted">${p.cat}</div><div class="price">${money(p.sell)} ${p.old?`<span class="old">${money(p.old)}</span>`:""}</div><div class="pfoot"><span class="badge">${p.qty>0?"متوفر":"نفد المخزون"}</span><button ${p.qty<1?"disabled":""} onclick="addCart('${p.id}')">أضف للسلة</button></div></div></article>`).join("")||`<div class="empty"><div style="font-size:32px;margin-bottom:8px">🔎</div><b>${q?"ما لقينا منتج بهذا الاسم":"لا توجد منتجات هنا حالياً"}</b><p class="muted">${q?"جرّب كلمة أقصر أو ابحث باسم القسم.":(favoritesOnly?"أضف المنتجات إلى المفضلة بالضغط على ♡.":"جرّب اختيار قسم آخر.")}</p>${q?'<button class="secondary" onclick="clearSearch()">مسح البحث وعرض المنتجات</button>':""}</div>`;
  const favCount=document.getElementById("favCount");if(favCount)favCount.textContent=favorites.length;
