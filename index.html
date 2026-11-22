@@ -213,6 +213,9 @@ button:focus:not(:focus-visible){outline:none}
 .pull-refresh-hint.visible{height:48px}
 .pull-refresh-icon{font-size:20px;line-height:1}
 @media(max-width:750px){.catalog-head{margin-top:4px}.store-refresh-btn{padding:8px 12px}}
+
+.product-detail-open .bottom-dock{display:none!important}
+.product-detail-open .product-page{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 </style></head>
 <body>
 <div id="managerGate" class="hidden">
@@ -283,6 +286,7 @@ function show(id){
   document.getElementById("managerGate").classList.add("hidden");
   const favoriteView=id==="favorites", pageId=favoriteView?"shop":id;
   document.body.classList.toggle("view-favorites",favoriteView);
+  document.body.classList.toggle("product-detail-open",id==="productPage");
   favoritesOnly=favoriteView;
   ["shop","cart","admin","productPage"].forEach(x=>{const el=document.getElementById(x);el.classList.toggle("hidden",x!==(id==="productPage"?"productPage":pageId));});
   document.querySelectorAll(".bottom-dock [data-view]").forEach(x=>x.classList.toggle("active",x.dataset.view===(favoriteView?"favorites":id)));
