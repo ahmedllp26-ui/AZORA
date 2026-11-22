@@ -150,6 +150,16 @@ body.view-favorites #shop .hero,body.view-favorites #shop .head,body.view-favori
 body.view-favorites .top-search,body.view-favorites .top-sort{display:none!important}
 body.view-favorites #shop .grid{margin-top:16px}
 /* cart icon mobile placement refresh */
+
+/* Pin cart to the actual top corner of the page header */
+@media(max-width:750px){
+ .top{position:relative!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;gap:10px!important;padding:10px 58px 10px 10px!important;align-items:start!important}
+ .top .brand{grid-column:1!important;grid-row:1!important;width:auto!important;min-width:0}
+ .top .nav{grid-column:1!important;grid-row:2!important;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(112px,.78fr)!important;width:100%!important;gap:8px!important}
+ .top .top-search{grid-column:1!important;grid-row:1!important;width:100%!important;min-width:0!important}
+ .top .top-sort{grid-column:2!important;grid-row:1!important;width:100%!important;min-width:0!important}
+ .top .cart-icon-btn{position:absolute!important;top:12px!important;inset-inline-end:10px!important;grid-column:auto!important;grid-row:auto!important;width:42px!important;height:42px!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:20!important}
+}
 </style></head>
 <body>
 <div id="managerGate" class="hidden">
