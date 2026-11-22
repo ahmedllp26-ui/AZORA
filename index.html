@@ -210,7 +210,8 @@ function cancelManagerLogin(){
   document.getElementById("managerGate").classList.add("hidden");
   show("shop");
 }
-function updateProfitLabel(){const src=document.getElementById("productSource").value,sell=Number(document.getElementById("ps").value)||0,profit=document.getElementById("pprofit"),buy=document.getElementById("pb");if(src==="program"){profit.value=programMargin;profit.readOnly=true}else profit.readOnly=false;buy.value=Math.max(0,sell-(Number(profit.value)||0))}document.addEventListener("input",e=>{if(e.target&&["ps","pprofit"].includes(e.target.id))updateProfitLabel()});\nfunction drawChips(){
+function updateProfitLabel(){const src=document.getElementById("productSource").value,sell=Number(document.getElementById("ps").value)||0,profit=document.getElementById("pprofit"),buy=document.getElementById("pb");if(src==="program"){profit.value=programMargin;profit.readOnly=true}else profit.readOnly=false;buy.value=Math.max(0,sell-(Number(profit.value)||0))}document.addEventListener("input",e=>{if(e.target&&["ps","pprofit"].includes(e.target.id))updateProfitLabel()});
+function drawChips(){
  document.getElementById("chips").innerHTML=cats.map(c=>'<button class="chip '+(active===c?'active':'')+'" onclick="active=\''+c+'\';drawChips();renderProducts()">'+c+'</button>').join("");
  const pc=document.getElementById("pc");
  pc.innerHTML=cats.slice(1).map(c=>'<option value="'+c+'">'+c+'</option>').join("");
@@ -331,7 +332,8 @@ async function addProduct(){
  }catch(e){const msg=(e.code==="storage/unauthorized")?"تم رفض رفع الصور من Firebase Storage. يلزم ضبط قواعد Storage للسماح للمدير المسجل فقط بالرفع.":(e.message||"تعذر حفظ المنتج");alert("تعذر إكمال الحفظ: "+msg)}
  finally{btn.disabled=false;btn.textContent="حفظ المنتج في المتجر"}
 }
-async function saveShipping(){shipping=Math.max(0,Number(document.getElementById("shipFee").value)||0);try{await db.collection("settings").doc("store").set({shipping},{merge:true});alert("تم حفظ أجور التوصيل");}catch(e){alert("تعذر الحفظ: "+e.message)}}\nasync function saveProgramMargin(){const v=Number(document.getElementById("programMargin").value);if(!Number.isFinite(v)||v<0)return alert("أدخل هامش ربح صحيح");programMargin=v;try{await db.collection("settings").doc("store").set({programMargin},{merge:true});updateProfitLabel();alert("تم حفظ هامش الربح");}catch(e){alert("تعذر الحفظ: "+e.message)}}
+async function saveShipping(){shipping=Math.max(0,Number(document.getElementById("shipFee").value)||0);try{await db.collection("settings").doc("store").set({shipping},{merge:true});alert("تم حفظ أجور التوصيل");}catch(e){alert("تعذر الحفظ: "+e.message)}}
+async function saveProgramMargin(){const v=Number(document.getElementById("programMargin").value);if(!Number.isFinite(v)||v<0)return alert("أدخل هامش ربح صحيح");programMargin=v;try{await db.collection("settings").doc("store").set({programMargin},{merge:true});updateProfitLabel();alert("تم حفظ هامش الربح");}catch(e){alert("تعذر الحفظ: "+e.message)}}
 async function deleteProduct(id){if(!confirm("حذف المنتج؟"))return;try{await db.collection("products").doc(String(id)).delete();await loadProducts();renderAdmin();renderProducts()}catch(e){alert("تعذر الحذف: "+e.message)}}
 async function editPrice(id){let p=products.find(x=>x.id===id),s=prompt("سعر البيع بالدينار العراقي",p.sell),b=prompt("سعر الشراء بالدينار العراقي",p.buy),q=prompt("الكمية المتوفرة",p.qty);if(s===null||b===null||q===null)return;if(Number(s)<=0||Number(b)<0||Number(q)<0)return alert("قيم غير صحيحة");try{await db.collection("products").doc(String(id)).update({sell:Number(s),buy:Number(b),qty:Number(q)});await loadProducts();renderAdmin();renderProducts()}catch(e){alert("تعذر التعديل: "+e.message)}}
 async function loadProducts(){
