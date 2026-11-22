@@ -1,10 +1,14 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "io.github.ahmedllp26_ui.twa",
-      "sha256_cert_fingerprints": ["B1:A1:5C:02:5E:54:48:33:3E:B3:E8:04:61:64:B0:F4:6A:0C:02:E7:06:E8:64:15:03:8F:CA:61:C3:3C:0C:EF"]
+      "sha256_cert_fingerprints": [
+        "9C:12:CD:19:05:75:C3:24:D6:1D:99:1D:CD:32:D1:3E:C2:42:D5:3C:00:CC:EE:69:A4:EE:10:9A:95:A0:12"
+      ]
     }
   }
 ]
