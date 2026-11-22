@@ -101,7 +101,7 @@ footer{padding:38px 10px}
 .payment-option.active{border:1.5px solid #7650a4!important;background:linear-gradient(145deg,#fff,#f8f2ff)!important;box-shadow:0 7px 19px rgba(86,49,125,.12)!important}
 .payment-option-icon{width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;border-radius:13px;font-size:20px;font-weight:900}
 .cash-icon{background:#edf8f1;color:#218452}
-.card-icon{background:#f1eafb;color:#684093}
+.card-icon{background:#fff;color:#eb001b}.mastercard-mark{position:relative;display:flex;align-items:center;justify-content:center;width:32px;height:22px}.mastercard-mark i{display:block;width:19px;height:19px;border-radius:50%;background:#eb001b}.mastercard-mark i+i{margin-left:-7px;background:#f79e1b;mix-blend-mode:multiply}
 .payment-option-copy{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
 .payment-option-copy strong{font-size:12px;line-height:1.5;color:#38244f}
 .payment-option-copy small{font-size:10px;line-height:1.5;color:#887c95;font-weight:500}
@@ -300,7 +300,7 @@ button.danger{background:#fff0ef!important;color:#b83e38!important}
 <span class="payment-option-icon cash-icon">💵</span><span class="payment-option-copy"><strong>الدفع عند الاستلام</strong><small>ادفع نقداً عند وصول طلبك</small></span><span class="payment-radio"></span>
 </button>
 <button type="button" class="payment-option" data-payment="تحويل MasterCard" aria-pressed="false" onclick="selectPaymentMethod('تحويل MasterCard',this)">
-<span class="payment-option-icon card-icon">▰</span><span class="payment-option-copy"><strong>التحويل عبر MasterCard</strong><small>حوّل المبلغ إلكترونياً بسهولة</small></span><span class="payment-radio"></span>
+<span class="payment-option-icon card-icon" aria-label="Mastercard"><span class="mastercard-mark" aria-hidden="true"><i></i><i></i></span></span><span class="payment-option-copy"><strong>التحويل عبر MasterCard</strong><small>حوّل المبلغ إلكترونياً بسهولة</small></span><span class="payment-radio"></span>
 </button>
 </div>
 </div></div><div id="mastercardDetails" class="mastercard-details hidden"><div class="mastercard-heading"><span class="mastercard-symbol">●</span><b>بيانات التحويل</b></div><div class="mastercard-owner"><small>اسم صاحب البطاقة</small><strong dir="ltr">AHMED B. NADHIM</strong></div><div class="mastercard-number-row"><div><small>رقم البطاقة</small><strong id="mastercardNumber" dir="ltr">2493569640</strong></div><button type="button" class="copy-card-btn" onclick="copyMastercardNumber()">نسخ الرقم</button></div><p>بعد إتمام التحويل، أرسل إشعار التحويل إلى المتجر ليتم تأكيد الدفع.</p></div><div class="note">أجور التوصيل الموحدة: <b id="shipLabel">تُحدد من لوحة الإدارة</b>.</div><div class="head"><b id="grandTotal">المجموع: 0 د.ع</b><button onclick="checkout()">إرسال الطلب</button></div></div></section>
