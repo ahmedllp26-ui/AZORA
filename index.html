@@ -483,7 +483,10 @@ async function checkout(){
      const waMessage="مرحباً، أود تأكيد تحويل مبلغ طلب AZORA رقم #"+orderRef.id+"، الإجمالي: "+money(order.total)+". سأرفق صورة إشعار التحويل.";
      waButton.href="https://wa.me/"+waNumber+"?text="+encodeURIComponent(waMessage);
      waButton.classList.remove("hidden");
-     waButton.style.display="block";
+     waButton.removeAttribute("hidden");
+     waButton.style.setProperty("display","block","important");
+     waButton.style.setProperty("visibility","visible","important");
+     waButton.style.setProperty("opacity","1","important");
    }else{
      waButton.classList.add("hidden");
      waButton.style.display="none";
