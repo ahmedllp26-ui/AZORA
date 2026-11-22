@@ -215,6 +215,8 @@ button:focus:not(:focus-visible){outline:none}
 @media(max-width:750px){.catalog-head{margin-top:4px}.store-refresh-btn{padding:8px 12px}}
 
 .product-detail-open .bottom-dock{display:none!important}
+.product-detail-open #productPage{position:relative;z-index:1001}
+.product-detail-open .product-page-info{position:relative;z-index:1002}
 .product-detail-open .product-page{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 </style></head>
 <body>
@@ -287,6 +289,7 @@ function show(id){
   const favoriteView=id==="favorites", pageId=favoriteView?"shop":id;
   document.body.classList.toggle("view-favorites",favoriteView);
   document.body.classList.toggle("product-detail-open",id==="productPage");
+  const dock=document.querySelector(".bottom-dock");if(dock)dock.style.setProperty("display",id==="productPage"?"none":"flex","important");
   favoritesOnly=favoriteView;
   ["shop","cart","admin","productPage"].forEach(x=>{const el=document.getElementById(x);el.classList.toggle("hidden",x!==(id==="productPage"?"productPage":pageId));});
   document.querySelectorAll(".bottom-dock [data-view]").forEach(x=>x.classList.toggle("active",x.dataset.view===(favoriteView?"favorites":id)));
