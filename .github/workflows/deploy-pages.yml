@@ -1,4 +1,4 @@
-name: Deploy MASWAKI Preview to GitHub Pages
+name: Deploy AZORA to GitHub Pages
 on:
   push:
     branches: [main]
@@ -27,13 +27,10 @@ jobs:
           rsync -a --exclude='.git' --exclude='.github' --exclude='_site' ./ _site/
           test -s _site/.well-known/assetlinks.json
       - name: Upload site
-        uses: actions/upload-pages-artifact@5f327015a708106f6f1b7c9a633901af30fe80cb # supports include-hidden-files
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages-${{ github.run_attempt }}
           path: _site
           include-hidden-files: true
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: github-pages-${{ github.run_attempt }}
