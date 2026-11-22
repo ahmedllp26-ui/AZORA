@@ -284,7 +284,7 @@ button.danger{background:#fff0ef!important;color:#b83e38!important}
 </div>
 <div id="masToast" role="status" aria-live="polite"><span class="toast-check">✓</span><span>تمت الإضافة إلى السلة</span></div>
 <div id="orderSuccess" role="dialog" aria-modal="true" aria-labelledby="orderSuccessTitle">
- <div class="success-card"><div class="success-icon" aria-hidden="true">✓</div><h2 id="orderSuccessTitle">تم إرسال الطلب</h2><p>وصل طلبك إلى متجر AZORA بنجاح، وسيتم مراجعته وتجهيزه.</p><button class="success-close" onclick="closeOrderSuccess()" aria-label="إغلاق نافذة تأكيد الطلب">إغلاق ✕</button></div>
+ <div class="success-card"><div class="success-icon" aria-hidden="true">✓</div><h2 id="orderSuccessTitle">تم إرسال الطلب</h2><p>وصل طلبك إلى متجر AZORA بنجاح، وسيتم مراجعته وتجهيزه.</p><a id="whatsappPaymentConfirm" class="success-close hidden" href="#" target="_blank" rel="noopener" style="display:block;text-decoration:none;margin:12px auto;background:#16845b;color:#fff;padding:13px 18px;border-radius:12px;font-weight:700">تأكيد الدفع عبر واتساب</a><button class="success-close" onclick="closeOrderSuccess()" aria-label="إغلاق نافذة تأكيد الطلب">إغلاق ✕</button></div>
 </div>
 <div class="shell">
 <header class="top"><a class="brand" href="#" onclick="show('shop');return false" aria-label="AZORA - الصفحة الرئيسية"><span class="mark" aria-hidden="true"><span>A</span><i></i></span><span class="brand-copy"><strong>AZORA</strong><small><b>أزورا</b><em>كل ما تحتاجه .. في مكان واحد</em></small></span></a><div class="nav"><div class="searchbox top-search"><span>⌕</span><input id="search" type="search" autocomplete="off" aria-label="البحث عن المنتجات" placeholder="ابحث عن منتج..." oninput="renderProducts()"><button id="clearSearch" class="clearsearch hidden" type="button" onclick="clearSearch()">مسح</button></div><div class="sortWrap top-sort"><button id="sortTrigger" class="sortTrigger" type="button" aria-expanded="false" onclick="toggleSortMenu()"><span id="sortLabel">الأحدث</span><span>⌄</span></button><div id="sortMenu" class="sortMenu"><button class="sortOption active" data-sort="new" onclick="setSort('new','الأحدث')">الأحدث</button><button class="sortOption" data-sort="low" onclick="setSort('low','السعر: الأقل إلى الأعلى')">السعر: الأقل إلى الأعلى</button><button class="sortOption" data-sort="high" onclick="setSort('high','السعر: الأعلى إلى الأقل')">السعر: الأعلى إلى الأقل</button><button class="sortOption" data-sort="az" onclick="setSort('az','الترتيب: أ إلى ي')">الترتيب: أ إلى ي</button></div></div><button class="cart-icon-btn" type="button" onclick="show('cart')" aria-label="عربة التسوق" title="عربة التسوق"><span aria-hidden="true">🛒</span><b id="count">0</b></button></div></header>
@@ -476,7 +476,19 @@ async function checkout(){
  let items=cart.map(x=>{let p=products.find(y=>y.id===x.id),price=Number(p.sell),unitProfit=p.profit!=null?Number(p.profit):Math.max(0,price-Number(p.buy||0));return {productId:String(p.id),name:p.name,price,quantity:Number(x.qty),cost:Math.max(0,price-unitProfit),unitProfit,profitType:p.profitType||"legacy"}});
  const paymentMethod=document.getElementById("pay").value;let order={name,phone:ph,province:document.getElementById("province").value,area,landmark,pay:paymentMethod,items,subtotal,shipping,total:subtotal+shipping,status:paymentMethod==="تحويل MasterCard"?"بانتظار تأكيد الدفع":"جديد",paymentConfirmed:paymentMethod!=="تحويل MasterCard",deliveryStarted:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
  try{
-   await db.collection("orders").add(order);
+   const orderRef=await db.collection("orders").add(order);
+   const waButton=document.getElementById("whatsappPaymentConfirm");
+   if(paymentMethod==="تحويل MasterCard"){
+     const waNumber="9647735905076";
+     const waMessage="مرحباً، أود تأكيد تحويل مبلغ طلب AZORA رقم #"+orderRef.id+"، الإجمالي: "+money(order.total)+". سأرفق صورة إشعار التحويل.";
+     waButton.href="https://wa.me/"+waNumber+"?text="+encodeURIComponent(waMessage);
+     waButton.classList.remove("hidden");
+     waButton.style.display="block";
+   }else{
+     waButton.classList.add("hidden");
+     waButton.style.display="none";
+     waButton.removeAttribute("href");
+   }
    cart=[];save();count();renderCart();
    show("shop");
    showOrderSuccess();
