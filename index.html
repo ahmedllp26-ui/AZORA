@@ -316,28 +316,29 @@ function showCartToast(success=true){
  toast.removeAttribute("class");
  toast.textContent=success?"تمت الإضافة إلى السلة ✅":"لم يتم الإضافة إلى السلة ❎";
  const styles={
-  all:"initial",display:"block",position:"fixed",left:"50%",right:"auto",
+  all:"initial",display:"block",position:"fixed",left:"0",right:"0",
+  marginLeft:"auto",marginRight:"auto",
   bottom:"calc(20px + env(safe-area-inset-bottom, 0px))",top:"auto",
   zIndex:"2147483647",width:"max-content",maxWidth:"calc(100vw - 32px)",
   boxSizing:"border-box",padding:"14px 22px",borderRadius:"14px",
   background:success?"#12864f":"#c62828",color:"#fff",
   fontFamily:"inherit",fontSize:"16px",fontWeight:"800",lineHeight:"1.5",
   textAlign:"center",direction:"rtl",boxShadow:"0 8px 28px #0005",
-  opacity:"0",visibility:"visible",transform:"translate(-50%, 24px)",
+  opacity:"0",visibility:"visible",transform:"translateY(24px)",
   transition:"opacity .25s ease, transform .25s ease",
   pointerEvents:"none"
  };
  Object.assign(toast.style,styles);
  toast.style.setProperty("display","block","important");
  toast.style.setProperty("opacity","0","important");
- toast.style.setProperty("transform","translate(-50%, 24px)","important");
+ toast.style.setProperty("transform","translateY(24px)","important");
  requestAnimationFrame(()=>{
   toast.style.setProperty("opacity","1","important");
-  toast.style.setProperty("transform","translate(-50%, 0)","important");
+  toast.style.setProperty("transform","translateY(0)","important");
  });
  masToastTimer=setTimeout(()=>{
   toast.style.setProperty("opacity","0","important");
-  toast.style.setProperty("transform","translate(-50%, 24px)","important");
+  toast.style.setProperty("transform","translateY(24px)","important");
  },2600);
 }
 function showOrderSuccess(){const modal=document.getElementById("orderSuccess");if(modal){modal.classList.add("show");document.body.style.overflow="hidden"}}
