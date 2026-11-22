@@ -266,7 +266,18 @@ button.danger{background:#fff0ef!important;color:#b83e38!important}
 .admin-tab.active{background:#f1e8fb!important;color:#5520a5!important;box-shadow:inset -3px 0 #8b50d5!important}
 #managerGate{background:radial-gradient(circle at 15% 15%,#9b68d0 0,transparent 35%),linear-gradient(135deg,#241044,#5520a5 68%,#8b50d5)!important}
 .searchbox:focus-within,.field:focus{border-color:#b58bdf!important;box-shadow:0 0 0 4px #8b50d51c!important}
-</style></head>
+</style><script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "e76b0597-edda-4d6d-b5fe-c924dfb0b4f8",
+      safari_web_id: "web.onesignal.auto.2bd24c9c-6b5e-41da-a209-1033c3319dfc",
+      notifyButton: { enable: true }
+    });
+  });
+</script>
+</head>
 <body>
 <div id="managerGate" class="hidden">
   <div class="loginCard">
