@@ -1,4 +1,4 @@
-const CACHE_NAME = "azora-shell-v7";
+const CACHE_NAME = "azora-shell-v8";
 
 const APP_SHELL = [
   "./",
