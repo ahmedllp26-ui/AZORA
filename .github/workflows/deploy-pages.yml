@@ -4,6 +4,7 @@ on:
     branches: [main]
   workflow_dispatch:
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -30,7 +31,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
-          include-hidden-files: true
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
