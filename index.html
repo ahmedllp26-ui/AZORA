@@ -200,6 +200,19 @@ button:focus:not(:focus-visible){outline:none}
  .field,button{min-height:44px}
 }
 
+
+/* Native-style store refresh */
+.catalog-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.store-refresh-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border:1px solid #e4e9f5;border-radius:14px;background:#fff;color:#344fc4;font-size:12px;font-weight:800;box-shadow:0 4px 14px #1d32600d;transition:background .2s,transform .2s}
+.store-refresh-btn:active{transform:scale(.96);background:#eef2ff}
+.store-refresh-btn:disabled{opacity:.65}
+.refresh-symbol{font-size:19px;line-height:1}
+.store-refresh-btn.is-loading .refresh-symbol,.pull-refresh-hint.is-loading .pull-refresh-icon{display:inline-block;animation:masRefreshSpin .8s linear infinite}
+@keyframes masRefreshSpin{to{transform:rotate(360deg)}}
+.pull-refresh-hint{height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:9px;color:#5266bd;font-size:12px;font-weight:800;transition:height .18s}
+.pull-refresh-hint.visible{height:48px}
+.pull-refresh-icon{font-size:20px;line-height:1}
+@media(max-width:750px){.catalog-head{margin-top:4px}.store-refresh-btn{padding:8px 12px}}
 </style></head>
 <body>
 <div id="managerGate" class="hidden">
@@ -224,8 +237,8 @@ button:focus:not(:focus-visible){outline:none}
 <header class="top"><a class="brand" href="#" onclick="show('shop');return false" aria-label="MASWAKI - الصفحة الرئيسية"><span class="mark" aria-hidden="true"><span>M</span><i></i></span><span class="brand-copy"><strong>MASWAKI</strong><small><b>مَسواكي</b><em>اختيارك الأذكى</em></small></span></a><div class="nav"><div class="searchbox top-search"><span>⌕</span><input id="search" type="search" autocomplete="off" aria-label="البحث عن المنتجات" placeholder="ابحث عن منتج..." oninput="renderProducts()"><button id="clearSearch" class="clearsearch hidden" type="button" onclick="clearSearch()">مسح</button></div><div class="sortWrap top-sort"><button id="sortTrigger" class="sortTrigger" type="button" aria-expanded="false" onclick="toggleSortMenu()"><span id="sortLabel">الأحدث</span><span>⌄</span></button><div id="sortMenu" class="sortMenu"><button class="sortOption active" data-sort="new" onclick="setSort('new','الأحدث')">الأحدث</button><button class="sortOption" data-sort="low" onclick="setSort('low','السعر: الأقل إلى الأعلى')">السعر: الأقل إلى الأعلى</button><button class="sortOption" data-sort="high" onclick="setSort('high','السعر: الأعلى إلى الأقل')">السعر: الأعلى إلى الأقل</button><button class="sortOption" data-sort="az" onclick="setSort('az','الترتيب: أ إلى ي')">الترتيب: أ إلى ي</button></div></div><button class="cart-icon-btn" type="button" onclick="show('cart')" aria-label="عربة التسوق" title="عربة التسوق"><span aria-hidden="true">🛒</span><b id="count">0</b></button></div></header>
 <main id="shop">
 <section class="hero"><div><span class="tag">إلكترونيات وإكسسوارات ذكية</span><h1>كل احتياجاتك<br>في مكان واحد</h1><p>أغراض منزلية، إكسسوارات، أغراض مطبخ والمزيد.</p><button onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">اكتشف المنتجات ←</button></div><div class="orb">🎧</div></section>
-<div class="head"><h2 id="catalog" class="section-heading">الأقسام</h2></div><div class="chips" id="chips"></div>
-<div class="grid" id="products"></div></main>
+<div class="head catalog-head"><h2 id="catalog" class="section-heading">الأقسام</h2><button id="storeRefreshBtn" class="store-refresh-btn" type="button" onclick="refreshStore()" aria-label="تحديث المنتجات"><span class="refresh-symbol">↻</span><span>تحديث</span></button></div><div class="chips" id="chips"></div>
+<div id="pullRefreshHint" class="pull-refresh-hint" aria-live="polite"><span class="pull-refresh-icon">↻</span><span id="pullRefreshText">اسحب للأسفل للتحديث</span></div><div class="grid" id="products"></div></main>
 <section id="cart" class="hidden"><div class="head"><h2>سلة المشتريات</h2><button class="secondary" onclick="show('shop')">متابعة التسوق</button></div><div class="panel" id="cartContent"></div><div class="panel"><h3>بيانات التوصيل وتأكيد الطلب</h3><div class="formgrid"><label>الاسم الكامل<input class="field" id="buyer" placeholder="اسم الزبون"></label><label>رقم الهاتف<input class="field" id="phone" placeholder="07xxxxxxxxx"></label><label>المحافظة<select class="field" id="province"><option>بغداد</option><option>البصرة</option><option>نينوى</option><option>أربيل</option><option>النجف</option><option>كربلاء</option><option>ذي قار</option><option>الأنبار</option><option>ديالى</option><option>السليمانية</option><option>واسط</option><option>ميسان</option><option>المثنى</option><option>القادسية</option><option>صلاح الدين</option><option>كركوك</option><option>دهوك</option></select></label><label>المنطقة<input class="field" id="area" placeholder="اسم المنطقة أو الحي"></label><label>أقرب نقطة دالّة<input class="field" id="landmark" placeholder="مثال: قرب مستشفى أو مدرسة"></label><label class="wide">طريقة الدفع<select class="field" id="pay" onchange="togglePaymentDetails()"><option value="الدفع عند الاستلام">الدفع عند الاستلام</option><option value="تحويل MasterCard">التحويل عبر MasterCard</option></select></label></div><div id="mastercardDetails" class="mastercard-details hidden"><div class="mastercard-heading"><span class="mastercard-symbol">●</span><b>بيانات التحويل</b></div><div class="mastercard-owner"><small>اسم صاحب البطاقة</small><strong dir="ltr">AHMED B. NADHIM</strong></div><div class="mastercard-number-row"><div><small>رقم البطاقة</small><strong id="mastercardNumber" dir="ltr">2493569640</strong></div><button type="button" class="copy-card-btn" onclick="copyMastercardNumber()">نسخ الرقم</button></div><p>بعد إتمام التحويل، أرسل إشعار التحويل إلى المتجر ليتم تأكيد الدفع.</p></div><div class="note">أجور التوصيل الموحدة: <b id="shipLabel">تُحدد من لوحة الإدارة</b>.</div><div class="head"><b id="grandTotal">المجموع: 0 د.ع</b><button onclick="checkout()">إرسال الطلب</button></div></div></section>
 <section id="admin" class="hidden admin-workspace">
 <div class="admin-topbar"><div><span class="admin-eyebrow">MASWAKI CONTROL CENTER</span><h2>مركز إدارة المتجر</h2><p>إدارة المنتجات والطلبات والمخزون من مكان واحد</p></div><button class="secondary" onclick="show('shop')">← العودة للمتجر</button></div>
@@ -445,6 +458,31 @@ function removeEditPhoto(i){editingProductImages.splice(i,1);drawEditPhotoList()
 function closeProductEdit(){document.getElementById("editProductOverlay").classList.remove("show");document.body.style.overflow=""}
 async function saveProductEdit(){const name=document.getElementById("editName").value.trim(),sell=Number(document.getElementById("editSell").value),buy=Number(document.getElementById("editBuy").value),qty=Number(document.getElementById("editQty").value),description=document.getElementById("editDescription").value.trim(),details=document.getElementById("editDetails").value.trim(),files=Array.from(document.getElementById("editPhotoFiles").files||[]);if(!name||sell<=0||buy<0||qty<0||!Number.isFinite(qty))return alert("تحقق من المعلومات المدخلة");if(files.some(f=>!f.type.startsWith("image/")||f.size>8*1024*1024))return alert("اختر صوراً فقط، وحجم كل صورة أقل من 8 ميغابايت");const btn=document.querySelector("#editProductOverlay .detail-add");btn.disabled=true;btn.textContent="جارٍ حفظ التعديلات...";try{const uploaded=[];for(let i=0;i<files.length;i++){const file=files[i],safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"_"),ref=storage.ref("products/"+currentUser.uid+"/"+Date.now()+"_edit_"+i+"_"+safe),snap=await ref.put(file,{contentType:file.type});uploaded.push(await snap.ref.getDownloadURL())}const finalImages=editingProductImages.concat(uploaded),primaryImage=finalImages[0]||"";await db.collection("products").doc(editingProductId).update({name,sell,buy,qty,description,details,images:finalImages,image:primaryImage});closeProductEdit();await loadProducts();renderAdmin();renderProducts();alert("تم تحديث المنتج وصوره بنجاح")}catch(e){alert("تعذر التعديل: "+(e.message||e))}finally{btn.disabled=false;btn.textContent="حفظ التعديلات"}}
 let productsLoadPromise=null;
+
+async function refreshStore(){
+ const btn=document.getElementById("storeRefreshBtn"),hint=document.getElementById("pullRefreshHint"),label=document.getElementById("pullRefreshText");
+ if(productsLoadPromise)return productsLoadPromise;
+ if(btn){btn.disabled=true;btn.classList.add("is-loading");btn.querySelector("span:last-child").textContent="جارٍ التحديث";}
+ if(hint){hint.classList.add("visible","is-loading");if(label)label.textContent="جارٍ تحديث المنتجات...";}
+ try{await loadProducts();if(hint&&label)label.textContent="تم تحديث المنتجات";}
+ finally{
+  if(btn){btn.disabled=false;btn.classList.remove("is-loading");btn.querySelector("span:last-child").textContent="تحديث";}
+  if(hint){hint.classList.remove("is-loading");setTimeout(()=>{hint.classList.remove("visible");if(label)label.textContent="اسحب للأسفل للتحديث";},1100);}
+ }
+}
+(function setupPullToRefresh(){
+ let startY=0,startX=0,tracking=false;
+ document.addEventListener("touchstart",e=>{
+  if(e.touches.length!==1||!document.getElementById("shop")||document.getElementById("shop").classList.contains("hidden")){tracking=false;return;}
+  tracking=window.scrollY<=2;startY=e.touches[0].clientY;startX=e.touches[0].clientX;
+ },{passive:true});
+ document.addEventListener("touchend",e=>{
+  if(!tracking)return;tracking=false;
+  const t=e.changedTouches[0],dy=t.clientY-startY,dx=Math.abs(t.clientX-startX);
+  if(dy>95&&dx<65&&window.scrollY<=2)refreshStore();
+ },{passive:true});
+})();
+
 async function loadProducts(){
  if(productsLoadPromise)return productsLoadPromise;
  productsLoadPromise=(async()=>{
