@@ -172,6 +172,8 @@ body.view-favorites #shop .grid{margin-top:16px}
 .chip{padding:7px 12px!important;font-size:12px!important}
 @media(max-width:600px){.hero{padding:11px 13px!important;min-height:0!important}.hero .orb{width:58px!important;height:58px!important;font-size:28px!important}.hero h1{font-size:19px!important}.hero p{font-size:11px!important}.hero button{padding:6px 9px!important}}
 .product{cursor:pointer}.product-detail-overlay{position:fixed;inset:0;z-index:99999;background:#101827bb;display:none;align-items:center;justify-content:center;padding:12px}.product-detail-overlay.show{display:flex}.product-detail-box{background:#fff;color:#17212b;width:min(100%,680px);max-height:92dvh;overflow:auto;border-radius:20px;padding:16px}.detail-main{width:100%;height:280px;object-fit:contain;background:#f5f6f8;border-radius:14px}.detail-thumbs{display:flex;gap:8px;overflow:auto;padding:10px 0}.detail-thumbs button{flex:0 0 66px}.detail-thumbs img{width:58px;height:58px;object-fit:cover}.detail-description{white-space:pre-wrap;line-height:1.9}.detail-price{font-size:22px;font-weight:800;color:#3157d5}.detail-add{width:100%;padding:13px;margin-top:14px;background:#3157d5;color:white;border:0;border-radius:12px}
+/* Fast product restore while Firebase refreshes */
+#products:empty:after{content:"جارٍ تجهيز المتجر...";display:block;padding:30px;text-align:center;color:var(--muted)}
 /* MASWAKI app-like touch experience */
 html{overscroll-behavior-y:contain;-webkit-text-size-adjust:100%}
 body{min-height:100dvh;overscroll-behavior-y:contain}
@@ -249,7 +251,7 @@ let cloudReady = false;
 
 const cats=["عرض الكل","إلكترونيات","أجهزة منزل","أجهزة المطبخ","أجهزة العناية","منتجات العناية","ألعاب","أدوات السيارات","عدد وأدوات","أدوات رياضية","أثاث","إنارة وإضاءة","أدوات منزلية","أدوات مطبخ"];
 const seed=[{id:1,name:"سماعة لاسلكية Pro",cat:cats[1],sell:35000,buy:22000,qty:8,old:42000,emoji:"🎧"},{id:2,name:"شاحن سريع USB‑C",cat:cats[1],sell:18000,buy:11000,qty:15,old:0,emoji:"🔌"},{id:3,name:"هاتف ذكي",cat:cats[1],sell:325000,buy:290000,qty:3,old:0,emoji:"📱"},{id:4,name:"كفر حماية شفاف",cat:cats[1],sell:9000,buy:3500,qty:24,old:12000,emoji:"📲"},{id:5,name:"كيبل Type‑C",cat:cats[1],sell:7000,buy:2500,qty:30,old:0,emoji:"🔋"},{id:6,name:"باور بانك 20000mAh",cat:cats[1],sell:42000,buy:30000,qty:6,old:48000,emoji:"🔋"}];
-let products=[],cart=JSON.parse(localStorage.getItem("mas_cart")||"[]"),favorites=JSON.parse(localStorage.getItem("mas_favorites")||"[]"),favoritesOnly=false,orders=[],shipping=5000,active="عرض الكل",sortMode="new";
+let products=(()=>{try{return JSON.parse(localStorage.getItem("mas_products_cache")||"[]")}catch(e){return []}})(),cart=JSON.parse(localStorage.getItem("mas_cart")||"[]"),favorites=JSON.parse(localStorage.getItem("mas_favorites")||"[]"),favoritesOnly=false,orders=[],shipping=5000,active="عرض الكل",sortMode="new";
 const money=n=>Number(n||0).toLocaleString("en-US")+" د.ع",save=()=>{localStorage.setItem("mas_cart",JSON.stringify(cart))};
 let managerUnlocked=false,programMargin=5000;
 function openStoreSettings(){if(!managerUnlocked){show("admin");return;}show("admin");adminTab("settingsAdmin",document.querySelector('.admin-tab[onclick*="settingsAdmin"]'));}
@@ -432,10 +434,31 @@ function drawEditPhotoList(){const box=document.getElementById("editPhotoList");
 function removeEditPhoto(i){editingProductImages.splice(i,1);drawEditPhotoList()}
 function closeProductEdit(){document.getElementById("editProductOverlay").classList.remove("show");document.body.style.overflow=""}
 async function saveProductEdit(){const name=document.getElementById("editName").value.trim(),sell=Number(document.getElementById("editSell").value),buy=Number(document.getElementById("editBuy").value),qty=Number(document.getElementById("editQty").value),description=document.getElementById("editDescription").value.trim(),details=document.getElementById("editDetails").value.trim(),files=Array.from(document.getElementById("editPhotoFiles").files||[]);if(!name||sell<=0||buy<0||qty<0||!Number.isFinite(qty))return alert("تحقق من المعلومات المدخلة");if(files.some(f=>!f.type.startsWith("image/")||f.size>8*1024*1024))return alert("اختر صوراً فقط، وحجم كل صورة أقل من 8 ميغابايت");const btn=document.querySelector("#editProductOverlay .detail-add");btn.disabled=true;btn.textContent="جارٍ حفظ التعديلات...";try{const uploaded=[];for(let i=0;i<files.length;i++){const file=files[i],safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"_"),ref=storage.ref("products/"+currentUser.uid+"/"+Date.now()+"_edit_"+i+"_"+safe),snap=await ref.put(file,{contentType:file.type});uploaded.push(await snap.ref.getDownloadURL())}const finalImages=editingProductImages.concat(uploaded),primaryImage=finalImages[0]||"";await db.collection("products").doc(editingProductId).update({name,sell,buy,qty,description,details,images:finalImages,image:primaryImage});closeProductEdit();await loadProducts();renderAdmin();renderProducts();alert("تم تحديث المنتج وصوره بنجاح")}catch(e){alert("تعذر التعديل: "+(e.message||e))}finally{btn.disabled=false;btn.textContent="حفظ التعديلات"}}
+let productsLoadPromise=null;
 async function loadProducts(){
- const snap=await db.collection("products").get();
- products=snap.docs.map(d=>({id:d.id,...d.data()}));
- renderProducts();
+ if(productsLoadPromise)return productsLoadPromise;
+ productsLoadPromise=(async()=>{
+   try{
+     const snap=await db.collection("products").get();
+     const fresh=snap.docs.map(d=>({id:d.id,...d.data()}));
+     products=fresh;
+     try{localStorage.setItem("mas_products_cache",JSON.stringify(fresh))}catch(cacheError){console.warn("Products cache:",cacheError)}
+     renderProducts();
+     return fresh;
+   }catch(error){
+     console.warn("تعذر تحديث المنتجات من الخادم:",error);
+     if(!Array.isArray(products)||!products.length){
+       const box=document.getElementById("products");
+       if(box)box.innerHTML='<div class="empty">تعذر تحميل المنتجات حالياً. تحقق من الاتصال ثم أعد المحاولة.</div>';
+     }else{
+       renderProducts();
+     }
+     throw error;
+   }finally{
+     productsLoadPromise=null;
+   }
+ })();
+ return productsLoadPromise;
 }
 async function loadCloudData(){
  await loadProducts();
