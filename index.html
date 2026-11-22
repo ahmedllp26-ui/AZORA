@@ -182,8 +182,8 @@ body.view-favorites #shop .grid{margin-top:16px}
  button,.chip,.heart,.favbtn,.product,.panel,.stat{transition:none!important}
 }
 .product{content-visibility:auto;contain-intrinsic-size:300px 340px}
-/* Fast product restore while Firebase refreshes */
-#products:empty:after{content:"جارٍ تجهيز المتجر...";display:block;padding:30px;text-align:center;color:var(--muted)}
+/* Product loading state */
+#products:empty:after{content:"تعذر تحميل المنتجات. تحقق من الاتصال وأعد المحاولة.";display:block;padding:30px;text-align:center;color:var(--muted)}
 /* MASWAKI app-like touch experience */
 html{overscroll-behavior-y:contain;-webkit-text-size-adjust:100%}
 body{min-height:100dvh;overscroll-behavior-y:contain}
@@ -449,24 +449,32 @@ async function loadProducts(){
  if(productsLoadPromise)return productsLoadPromise;
  productsLoadPromise=(async()=>{
    try{
-     const snap=await db.collection("products").get();
-     const fresh=snap.docs.map(d=>({id:d.id,...d.data()}));
+     // Show saved products immediately; then refresh from Firestore.
+     if(Array.isArray(products)&&products.length)renderProducts();
+     let snap=null;
+     try{snap=await db.collection("products").get({source:"cache"})}catch(cacheError){}
+     if(snap&& !snap.empty){
+       products=snap.docs.map(d=>({id:d.id,...d.data()}));
+       renderProducts();
+     }
+     const serverSnap=await Promise.race([
+       db.collection("products").get({source:"server"}),
+       new Promise((_,reject)=>setTimeout(()=>reject(new Error("انتهت مهلة الاتصال")),12000))
+     ]);
+     const fresh=serverSnap.docs.map(d=>({id:d.id,...d.data()}));
      products=fresh;
      try{localStorage.setItem("mas_products_cache",JSON.stringify(fresh))}catch(cacheError){console.warn("Products cache:",cacheError)}
      renderProducts();
      return fresh;
    }catch(error){
      console.warn("تعذر تحديث المنتجات من الخادم:",error);
-     if(!Array.isArray(products)||!products.length){
+     if(Array.isArray(products)&&products.length)renderProducts();
+     else{
        const box=document.getElementById("products");
-       if(box)box.innerHTML='<div class="empty">تعذر تحميل المنتجات حالياً. تحقق من الاتصال ثم أعد المحاولة.</div>';
-     }else{
-       renderProducts();
+       if(box)box.innerHTML='<div class="empty">تعذر الاتصال بقاعدة البيانات. افحص الإنترنت ثم أعد المحاولة.</div>';
      }
-     throw error;
-   }finally{
-     productsLoadPromise=null;
-   }
+     return products;
+   }finally{productsLoadPromise=null}
  })();
  return productsLoadPromise;
 }
