@@ -124,6 +124,30 @@ footer{padding:38px 10px}
 .bottom-dock button.active{background:#dfe6ff;color:#243eaf;box-shadow:inset 0 0 0 1px #c8d4ff}
 body.view-favorites #shop .hero,body.view-favorites #shop .head,body.view-favorites #shop .chips,body.view-favorites .top-search,body.view-favorites .top-sort{display:none!important}
 body.view-favorites #shop .grid{margin-top:18px}
+
+/* Stable responsive catalog controls */
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.top .brand{flex:0 0 auto}
+.top .nav{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.top .top-search{flex:1 1 220px;min-width:0;max-width:none}
+.top .top-sort{flex:0 0 210px;width:210px;min-width:0}
+#shop .grid{display:grid!important}
+#shop .filters{display:none!important}
+.bottom-dock{z-index:1000}
+@media(max-width:750px){
+ .top{display:grid;grid-template-columns:1fr 44px;gap:10px}
+ .top .brand{grid-column:1;grid-row:1}
+ .top .cart-icon-btn{grid-column:2;grid-row:1;position:static;justify-self:end}
+ .top .nav{grid-column:1 / -1;grid-row:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(125px,.8fr);gap:8px;width:100%}
+ .top .top-search{grid-column:1;grid-row:1;width:100%;min-width:0}
+ .top .top-sort{grid-column:2;grid-row:1;width:100%;min-width:0}
+ .top .sortTrigger{min-height:46px;padding:9px 10px!important;font-size:12px}
+ .top .searchbox{min-height:46px}
+ .top .searchbox input{font-size:12px}
+}
+body.view-favorites #shop .hero,body.view-favorites #shop .head,body.view-favorites #shop .chips{display:none!important}
+body.view-favorites .top-search,body.view-favorites .top-sort{display:none!important}
+body.view-favorites #shop .grid{margin-top:16px}
 </style></head>
 <body>
 <div id="managerGate" class="hidden">
@@ -193,10 +217,13 @@ function show(id){
   if(id==="admin"&&!managerUnlocked){document.getElementById("managerGate").classList.remove("hidden");document.getElementById("managerPassword").value="";document.getElementById("managerLoginError").textContent="";return;}
   document.getElementById("managerGate").classList.add("hidden");
   const favoriteView=id==="favorites", pageId=favoriteView?"shop":id;
-  document.body.classList.toggle("view-favorites",favoriteView);favoritesOnly=favoriteView;
-  ["shop","cart","admin"].forEach(x=>{const el=document.getElementById(x);el.classList.toggle("hidden",x!==pageId);if(x===pageId){el.classList.remove("view-enter");void el.offsetWidth;el.classList.add("view-enter");}});
+  document.body.classList.toggle("view-favorites",favoriteView);
+  favoritesOnly=favoriteView;
+  ["shop","cart","admin"].forEach(x=>{const el=document.getElementById(x);el.classList.toggle("hidden",x!==pageId);});
   document.querySelectorAll(".bottom-dock [data-view]").forEach(x=>x.classList.toggle("active",x.dataset.view===(favoriteView?"favorites":id)));
-  if(favoriteView){const h=document.querySelector("#shop .hero h1");if(h)h.textContent="المفضلة";renderProducts();}else{const h=document.querySelector("#shop .hero h1");if(h)h.innerHTML="كل احتياجاتك<br>في مكان واحد";}
+  const title=document.querySelector("#shop .hero h1");
+  if(title)title.innerHTML=favoriteView?"المفضلة":"كل احتياجاتك<br>في مكان واحد";
+  if(favoriteView){renderProducts();}else if(id==="shop"){favoritesOnly=false;renderProducts();}
   if(id==="cart")renderCart();if(id==="admin")renderAdmin();window.scrollTo({top:0,behavior:"smooth"});
 }
 async function managerLogin(event){
