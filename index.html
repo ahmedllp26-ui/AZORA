@@ -92,7 +92,7 @@ footer{padding:38px 10px}
 
 .mastercard-details{margin:14px 0;padding:17px;border:1px solid #dfe5f5;border-radius:18px;background:linear-gradient(145deg,#fff,#f6f8ff);box-shadow:0 8px 24px rgba(31,47,88,.07)}.mastercard-heading{display:flex;align-items:center;gap:9px;color:#263b70;margin-bottom:14px}.mastercard-symbol{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:#edf1ff;color:#344fc4;font-size:16px}.mastercard-owner,.mastercard-number-row{padding:12px 13px;background:#fff;border:1px solid #e9edf5;border-radius:12px;margin-top:9px}.mastercard-owner small,.mastercard-number-row small{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}.mastercard-owner strong,.mastercard-number-row strong{font-size:15px;letter-spacing:.4px;color:#172342}.mastercard-number-row{display:flex;align-items:center;justify-content:space-between;gap:10px}.copy-card-btn{padding:9px 12px;border-radius:10px;font-size:12px;white-space:nowrap}.mastercard-details p{font-size:11px;line-height:1.8;color:var(--muted);margin:12px 2px 0}\n
 /* Friendly customer confirmations */
-#masToast{position:fixed!important;z-index:2147483647!important;left:0!important;right:0!important;margin-left:auto!important;margin-right:auto!important;bottom:calc(22px + env(safe-area-inset-bottom,0px))!important;display:flex!important;align-items:center;justify-content:center;gap:10px;width:max-content;max-width:calc(100vw - 32px);box-sizing:border-box;padding:13px 20px;border:1px solid #ffffff55;border-radius:15px;background:#12864f;color:#fff!important;box-shadow:0 12px 30px #064b3266;font-size:15px;font-weight:800;line-height:1.5;white-space:normal;text-align:center;direction:rtl;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(calc(100% + 90px));transform-origin:center bottom;transition:transform .62s cubic-bezier(.16,1,.3,1),opacity .32s ease,visibility 0s linear .62s;will-change:transform,opacity;}
+#masToast{position:fixed!important;z-index:2147483647!important;left:0!important;right:0!important;top:auto!important;margin-left:auto!important;margin-right:auto!important;bottom:calc(22px + env(safe-area-inset-bottom,0px))!important;display:flex!important;align-items:center;justify-content:center;gap:10px;width:max-content;max-width:calc(100vw - 32px);box-sizing:border-box;padding:13px 20px;border:1px solid #ffffff55;border-radius:15px;background:#12864f;color:#fff!important;box-shadow:0 12px 30px #064b3266;font-size:15px;font-weight:800;line-height:1.5;white-space:normal;text-align:center;direction:rtl;pointer-events:none;opacity:0;visibility:hidden;top:auto!important;transform:translateY(calc(100% + 90px));transform-origin:center bottom;transition:transform .62s cubic-bezier(.16,1,.3,1),opacity .32s ease,visibility 0s linear .62s;will-change:transform,opacity;}
 #masToast.show{opacity:1!important;visibility:visible!important;transform:translateY(0)!important;transition:transform .62s cubic-bezier(.16,1,.3,1),opacity .32s ease,visibility 0s;}
 #masToast.error{background:#c62828!important;box-shadow:0 12px 30px #650d0d55!important;}
 #masToast .toast-symbol{flex:0 0 auto;font-size:19px;font-weight:900;line-height:1;color:#fff}
@@ -306,44 +306,31 @@ let masToastTimer;
 function showCartToast(success=true){
  clearTimeout(masToastTimer);
  let toast=document.getElementById("masToast");
- if(!toast){
-  toast=document.createElement("div");
-  toast.id="masToast";
-  document.body.appendChild(toast);
- }else if(toast.parentElement!==document.body){
-  document.body.appendChild(toast);
- }
- toast.removeAttribute("class");
+ if(!toast){toast=document.createElement("div");toast.id="masToast";document.body.appendChild(toast)}
  toast.textContent=success?"تمت الإضافة إلى السلة ✅":"لم يتم الإضافة إلى السلة ❎";
- const styles={
-  all:"initial",display:"block",position:"fixed",left:"0",right:"0",
+ Object.assign(toast.style,{
+  position:"fixed",left:"0",right:"0",top:"auto",
+  bottom:"calc(22px + env(safe-area-inset-bottom, 0px))",
   marginLeft:"auto",marginRight:"auto",
-  bottom:"calc(20px + env(safe-area-inset-bottom, 0px))",top:"auto",
-  zIndex:"2147483647",width:"max-content",maxWidth:"calc(100vw - 32px)",
-  boxSizing:"border-box",padding:"14px 22px",borderRadius:"14px",
-  background:success?"#12864f":"#c62828",color:"#fff",
-  fontFamily:"inherit",fontSize:"16px",fontWeight:"800",lineHeight:"1.5",
-  textAlign:"center",direction:"rtl",boxShadow:"0 8px 28px #0005",
-  opacity:"0",visibility:"visible",transform:"translateY(24px)",
-  transition:"opacity .25s ease, transform .25s ease",
-  pointerEvents:"none"
- };
- Object.assign(toast.style,styles);
- toast.style.setProperty("left","0","important");
- toast.style.setProperty("right","0","important");
- toast.style.setProperty("margin-left","auto","important");
- toast.style.setProperty("margin-right","auto","important");
- toast.style.setProperty("display","block","important");
- toast.style.setProperty("opacity","0","important");
- toast.style.setProperty("transform","translateY(24px)","important");
- requestAnimationFrame(()=>{
-  toast.style.setProperty("opacity","1","important");
-  toast.style.setProperty("transform","translateY(0)","important");
+  width:"max-content",maxWidth:"calc(100vw - 32px)",
+  display:"block",boxSizing:"border-box",padding:"14px 22px",
+  borderRadius:"14px",background:success?"#12864f":"#c62828",
+  color:"#fff",fontFamily:"inherit",fontSize:"16px",fontWeight:"800",
+  lineHeight:"1.5",textAlign:"center",direction:"rtl",
+  boxShadow:"0 8px 28px #0005",zIndex:"2147483647",
+  pointerEvents:"none",opacity:"1",visibility:"visible",
+  transform:"none",transition:"opacity .2s ease"
  });
+ for(const [k,v] of Object.entries({
+  left:"0",right:"0",top:"auto",
+  bottom:"calc(22px + env(safe-area-inset-bottom, 0px))",
+  "margin-left":"auto","margin-right":"auto",
+  opacity:"1",visibility:"visible",transform:"none"
+ })) toast.style.setProperty(k,v,"important");
  masToastTimer=setTimeout(()=>{
   toast.style.setProperty("opacity","0","important");
-  toast.style.setProperty("transform","translateY(24px)","important");
- },2600);
+  toast.style.setProperty("visibility","hidden","important");
+ },2200);
 }
 function showOrderSuccess(){const modal=document.getElementById("orderSuccess");if(modal){modal.classList.add("show");document.body.style.overflow="hidden"}}
 function closeOrderSuccess(){const modal=document.getElementById("orderSuccess");if(modal)modal.classList.remove("show");document.body.style.overflow=""}
