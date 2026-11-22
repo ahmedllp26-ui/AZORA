@@ -240,15 +240,32 @@ function showCartToast(success=true){
  const toast=document.getElementById("masToast");
  if(!toast)return;
  clearTimeout(masToastTimer);
- toast.classList.toggle("error",!success);
- toast.innerHTML=success?'<span class="toast-symbol">✅</span><span>تمت الإضافة إلى السلة</span>':'<span class="toast-symbol">❎</span><span>لم يتم الإضافة إلى السلة</span>';
- toast.style.cssText += ";display:flex!important;position:fixed!important;z-index:2147483647!important;left:50%!important;right:auto!important;bottom:calc(22px + env(safe-area-inset-bottom,0px))!important;opacity:1!important;visibility:visible!important;pointer-events:none!important;transform:translate(-50%,calc(100% + 90px))!important;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .25s ease!important";
- void toast.offsetWidth;
- requestAnimationFrame(()=>{toast.style.setProperty("transform","translate(-50%,0)","important")});
+ toast.className="";
+ toast.textContent=success?"تمت الإضافة إلى السلة ✅":"لم يتم الإضافة إلى السلة ❎";
+ Object.assign(toast.style,{
+  display:"block",position:"fixed",left:"50%",right:"auto",
+  bottom:"calc(20px + env(safe-area-inset-bottom, 0px))",
+  top:"auto",zIndex:"2147483647",width:"max-content",
+  maxWidth:"calc(100vw - 32px)",boxSizing:"border-box",
+  padding:"14px 22px",borderRadius:"14px",
+  background:success?"#12864f":"#c62828",color:"#ffffff",
+  fontSize:"16px",fontWeight:"800",lineHeight:"1.5",
+  textAlign:"center",direction:"rtl",boxShadow:"0 8px 28px #0005",
+  opacity:"0",visibility:"visible",transform:"translate(-50%, 30px)",
+  transition:"opacity .25s ease, transform .25s ease",
+  pointerEvents:"none"
+ });
+ toast.style.setProperty("display","block","important");
+ toast.style.setProperty("opacity","0","important");
+ toast.style.setProperty("transform","translate(-50%, 30px)","important");
+ setTimeout(()=>{
+  toast.style.setProperty("opacity","1","important");
+  toast.style.setProperty("transform","translate(-50%, 0)","important");
+ },30);
  masToastTimer=setTimeout(()=>{
-   toast.style.setProperty("transform","translate(-50%,calc(100% + 90px))","important");
-   toast.style.setProperty("opacity","0","important");
-   toast.style.setProperty("visibility","hidden","important");
+  toast.style.setProperty("opacity","0","important");
+  toast.style.setProperty("transform","translate(-50%, 30px)","important");
+  setTimeout(()=>{toast.style.setProperty("display","none","important")},300);
  },2600);
 }
 function showOrderSuccess(){const modal=document.getElementById("orderSuccess");if(modal){modal.classList.add("show");document.body.style.overflow="hidden"}}
