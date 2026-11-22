@@ -1,11 +1,11 @@
 const CACHE_NAME = "maswaki-shell-v4";
 
 const APP_SHELL = [
-  "/MASWAKI/",
-  "/MASWAKI/index.html",
-  "/MASWAKI/manifest.webmanifest",
-  "/MASWAKI/icons/icon-192.png",
-  "/MASWAKI/icons/icon-512.png"
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png"
 ];
 
 self.addEventListener("install", event => {
