@@ -289,6 +289,9 @@ button.danger{background:#fff0ef!important;color:#b83e38!important}
     });
   });
 </script>
+<style>
+.catalog-actions{display:flex;align-items:center;gap:8px}.view-toggle-btn{background:#f1eafe;color:#5823a5;border:1px solid #e3d4fb;border-radius:12px;padding:9px 12px;font-size:12px;font-weight:800;white-space:nowrap}.grid.list-view{grid-template-columns:1fr;gap:10px}.grid.list-view .product{display:grid;grid-template-columns:minmax(112px,190px) minmax(0,1fr);align-items:stretch}.grid.list-view .pic{height:100%;min-height:150px;grid-row:1}.grid.list-view .pbody{display:flex;flex-direction:column;justify-content:center;min-width:0}.grid.list-view .pfoot{margin-top:auto;padding-top:8px}.grid.list-view .product-specs{-webkit-line-clamp:2}.grid.list-view .heart{top:8px;left:auto;right:8px}.grid.list-view .price{margin:7px 0}.added-state{background:#16845b!important;color:#fff!important}@media(max-width:520px){.catalog-actions{gap:5px}.view-toggle-btn{padding:9px 8px;font-size:11px}.grid.list-view .product{grid-template-columns:108px minmax(0,1fr)}.grid.list-view .pic{min-height:145px}.grid.list-view .pbody{padding:11px}.grid.list-view .pbody h3{font-size:14px}.grid.list-view .pfoot{align-items:flex-start;flex-direction:column}.grid.list-view .pfoot button{width:100%}}
+</style>
 </head>
 <body>
 <div id="managerGate" class="hidden">
@@ -363,6 +366,7 @@ let cloudReady = false;
 
 const cats=["عرض الكل","إلكترونيات","أجهزة منزل","أجهزة المطبخ","أجهزة العناية","منتجات العناية","ألعاب","أدوات السيارات","عدد وأدوات","أدوات رياضية","أثاث","إنارة وإضاءة","أدوات منزلية","أدوات مطبخ"];
 const seed=[{id:1,name:"سماعة لاسلكية Pro",cat:cats[1],sell:35000,buy:22000,qty:8,old:42000,emoji:"🎧"},{id:2,name:"شاحن سريع USB‑C",cat:cats[1],sell:18000,buy:11000,qty:15,old:0,emoji:"🔌"},{id:3,name:"هاتف ذكي",cat:cats[1],sell:325000,buy:290000,qty:3,old:0,emoji:"📱"},{id:4,name:"كفر حماية شفاف",cat:cats[1],sell:9000,buy:3500,qty:24,old:12000,emoji:"📲"},{id:5,name:"كيبل Type‑C",cat:cats[1],sell:7000,buy:2500,qty:30,old:0,emoji:"🔋"},{id:6,name:"باور بانك 20000mAh",cat:cats[1],sell:42000,buy:30000,qty:6,old:48000,emoji:"🔋"}];
+let productView=localStorage.getItem("azora_product_view")==="list"?"list":"grid";
 let products=(()=>{try{return JSON.parse(localStorage.getItem("mas_products_cache")||"[]")}catch(e){return []}})(),cart=JSON.parse(localStorage.getItem("mas_cart")||"[]"),favorites=JSON.parse(localStorage.getItem("mas_favorites")||"[]"),favoritesOnly=false,orders=[],shipping=5000,active="عرض الكل",sortMode="new";
 const money=n=>Number(n||0).toLocaleString("en-US")+" د.ع",save=()=>{localStorage.setItem("mas_cart",JSON.stringify(cart))};
 let managerUnlocked=false;
@@ -428,12 +432,14 @@ function normalizeSearch(value){return String(value||"").toLowerCase().normalize
 function clearSearch(){document.getElementById("search").value="";renderProducts();document.getElementById("search").focus()}
 function toggleSortMenu(){const menu=document.getElementById("sortMenu"),trigger=document.getElementById("sortTrigger"),open=menu.classList.toggle("open");trigger.setAttribute("aria-expanded",String(open))}
 function setSort(value,label){sortMode=value;document.getElementById("sortLabel").textContent=label;document.querySelectorAll(".sortOption").forEach(b=>b.classList.toggle("active",b.dataset.sort===value));document.getElementById("sortMenu").classList.remove("open");document.getElementById("sortTrigger").setAttribute("aria-expanded","false");renderProducts()}
+function setProductView(mode){productView=mode==="list"?"list":"grid";try{localStorage.setItem("azora_product_view",productView)}catch(e){}const b=document.getElementById("viewToggleBtn");if(b){b.textContent=productView==="grid"?"☷ عرض القائمة":"▦ عرض الشبكة"}const g=document.getElementById("products");if(g)g.classList.toggle("list-view",productView==="list")}
 function renderProducts(){
  const raw=document.getElementById("search").value, q=normalizeSearch(raw), sort=sortMode;
  const clear=document.getElementById("clearSearch");if(clear)clear.classList.toggle("hidden",!raw);
  let a=products.filter(p=>{const searchable=normalizeSearch([p.name,p.cat,p.description,p.details,p.keywords].filter(Boolean).join(" "));const legacyElectronics=["سماعات وإيربودز","شواحن","هواتف","كفرات وحمايات","كيبلات","باور بانك","إكسسوارات أخرى"];const categoryMatch=active==="عرض الكل"||(active==="إلكترونيات"?(p.cat==="إلكترونيات"||legacyElectronics.includes(p.cat)):p.cat===active);return categoryMatch&&(!q||searchable.includes(q))&&(!favoritesOnly||favorites.includes(String(p.id)));});
  if(sort==="low")a.sort((x,y)=>x.sell-y.sell);if(sort==="high")a.sort((x,y)=>y.sell-x.sell);if(sort==="az")a.sort((x,y)=>String(x.name||"").localeCompare(String(y.name||""),"ar"));
  document.getElementById("products").innerHTML=a.map(p=>`<article class="product" onclick="openProductDetail('${p.id}')"><button class="heart ${favorites.includes(String(p.id))?"on":""}" aria-label="${favorites.includes(String(p.id))?"إزالة من المفضلة":"إضافة إلى المفضلة"}" title="${favorites.includes(String(p.id))?"إزالة من المفضلة":"إضافة إلى المفضلة"}" onclick="event.stopPropagation();toggleFavorite('${p.id}')">${favorites.includes(String(p.id))?"♥":"♡"}</button><div class="pic">${(p.images&&p.images.length)||p.image?`<img src="${(p.images&&p.images[0])||p.image}" alt="${p.name}" loading="lazy" decoding="async" fetchpriority="low">`:p.emoji||"📦"}</div><div class="pbody"><h3>${p.name}</h3><div class="muted">${p.cat}</div>${managerUnlocked?`<div class="small">نوع المنتج: ${p.source==="program"?"من البرامج":"منتج خاص"}</div>`:""}<div class="price">${money(p.sell)} ${p.old?`<span class="old">${money(p.old)}</span>`:""}</div>${p.details?`<div class="product-specs"><b>المقاسات / المواصفات:</b> ${p.details}</div>`:""}<div class="pfoot"><span class="badge">${p.qty>0?"المتوفر: "+p.qty+" قطعة":"نفد المخزون"}</span><button ${p.qty<1?"disabled":""} onclick="event.stopPropagation();addCart('${p.id}')">أضف للسلة</button></div></div></article>`).join("")||`<div class="empty"><div style="font-size:32px;margin-bottom:8px">🔎</div><b>${q?"ما لقينا منتج بهذا الاسم":"لا توجد منتجات هنا حالياً"}</b><p class="muted">${q?"جرّب كلمة أقصر أو ابحث باسم القسم.":(favoritesOnly?"أضف المنتجات إلى المفضلة بالضغط على ♡.":"جرّب اختيار قسم آخر.")}</p>${q?'<button class="secondary" onclick="clearSearch()">مسح البحث وعرض المنتجات</button>':""}</div>`;
+ document.getElementById("products").classList.toggle("list-view",productView==="list");
  const favCount=document.getElementById("favCount");if(favCount)favCount.textContent=favorites.length;
 }
 let detailImages=[];
@@ -700,7 +706,7 @@ auth.onAuthStateChanged(async user=>{
  }
 });
 loadProducts().catch(e=>console.warn("Firebase products:",e));
-window.show=show;window.adminTab=adminTab;window.managerLogin=managerLogin;window.cancelManagerLogin=cancelManagerLogin;
+window.show=show;window.setProductView=setProductView;window.adminTab=adminTab;window.managerLogin=managerLogin;window.cancelManagerLogin=cancelManagerLogin;
 window.refreshStore=refreshStore;window.selectStoreCategory=selectStoreCategory;window.renderProducts=renderProducts;window.clearSearch=clearSearch;window.toggleSortMenu=toggleSortMenu;window.setSort=setSort;window.toggleFavorite=toggleFavorite;window.toggleFavoriteView=toggleFavoriteView;window.showFavorites=showFavorites;window.addCart=addCart;window.changeQty=changeQty;window.removeItem=removeItem;
 window.toggleCategoryMenu=toggleCategoryMenu;window.setAdminCategory=setAdminCategory;window.toggleProvinceMenu=toggleProvinceMenu;window.setProvince=setProvince;window.closeOrderSuccess=closeOrderSuccess;window.checkout=checkout;window.addProduct=addProduct;window.saveShipping=saveShipping;window.deleteProduct=deleteProduct;window.editPrice=editPrice;window.saveProductEdit=saveProductEdit;window.closeProductEdit=closeProductEdit;window.openProductDetail=openProductDetail;window.selectDetailImage=selectDetailImage;window.closeProductDetail=closeProductDetail;
 
