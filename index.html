@@ -507,7 +507,9 @@ async function checkout(){
    }
    cart=[];save();count();renderCart();
    show("shop");
-   showOrderSuccess(paymentMethod);
+   closeOrderSuccess();
+   if(paymentMethod==="تحويل MasterCard")showOrderSuccess(paymentMethod);
+   else alert("تم استلام طلبك بنجاح، شكراً لتسوقك من AZORA");
  }catch(e){alert("تعذر إرسال الطلب: "+e.message)}
 }
 let productPreviewUrls=[];
