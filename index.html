@@ -266,6 +266,12 @@ button.danger{background:#fff0ef!important;color:#b83e38!important}
 .admin-tab.active{background:#f1e8fb!important;color:#5520a5!important;box-shadow:inset -3px 0 #8b50d5!important}
 #managerGate{background:radial-gradient(circle at 15% 15%,#9b68d0 0,transparent 35%),linear-gradient(135deg,#241044,#5520a5 68%,#8b50d5)!important}
 .searchbox:focus-within,.field:focus{border-color:#b58bdf!important;box-shadow:0 0 0 4px #8b50d51c!important}
+
+/* AZORA product cards: show the complete product photo without cropping */
+.pic{display:flex;align-items:center;justify-content:center;padding:8px}
+.pic img{width:100%;height:100%;object-fit:contain;object-position:center}
+@media(max-width:750px){.pic{height:150px;padding:7px}}
+
 </style><script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
