@@ -441,11 +441,11 @@ function toggleFavorite(id){id=String(id);favorites=favorites.includes(id)?favor
 function toggleFavoriteView(){favoritesOnly=!favoritesOnly;renderProducts()}
 function showFavorites(){show("favorites") }
 let masToastTimer;
-function showCartToast(success=true){
+function showCartToast(success=true,message=null){
  clearTimeout(masToastTimer);
  let toast=document.getElementById("masToast");
  if(!toast){toast=document.createElement("div");toast.id="masToast";document.body.appendChild(toast)}
- toast.textContent=success?"تمت الإضافة إلى السلة ✅":"لم يتم الإضافة إلى السلة ❎";
+ toast.textContent=message||(success?"تمت الإضافة إلى السلة ✅":"لم يتم الإضافة إلى السلة ❎");
  Object.assign(toast.style,{
   position:"fixed",left:"0",right:"0",top:"auto",
   bottom:"calc(22px + env(safe-area-inset-bottom, 0px))",
@@ -509,7 +509,7 @@ async function checkout(){
    show("shop");
    closeOrderSuccess();
    if(paymentMethod==="تحويل MasterCard")showOrderSuccess(paymentMethod);
-   else alert("تم استلام طلبك بنجاح، شكراً لتسوقك من AZORA");
+   else showCartToast(true,"تم استلام طلبك بنجاح 💜");
  }catch(e){alert("تعذر إرسال الطلب: "+e.message)}
 }
 let productPreviewUrls=[];
