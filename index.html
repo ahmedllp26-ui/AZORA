@@ -544,7 +544,7 @@ async function addProduct(){
    if(!image&&images.length)image=images[0];
    await db.collection("products").add({name,description:document.getElementById("pdescription").value.trim(),details:document.getElementById("pdetails").value.trim(),cat:document.getElementById("pc").value,sell,buy,source,qty,old:Number(document.getElementById("po").value)||0,image,images,emoji:"📦",createdAt:firebase.firestore.FieldValue.serverTimestamp()});
    ["pn","ps","pb","po","purl","pdescription","pdetails"].forEach(id=>document.getElementById(id).value="");document.getElementById("productSource").value="program";updateProfitLabel();document.getElementById("pq").value="1";document.getElementById("pfile").value="";previewProductImages();
-   await loadProducts();renderProducts();renderAdmin();adminTab("productsAdmin",document.querySelector('.admin-tab[onclick*="productsAdmin"]'));alert("تم حفظ المنتج وصوره بنجاح");
+   await loadProducts();renderProducts();renderAdmin();adminTab("productsAdmin",document.querySelector('.admin-tab[onclick*="productsAdmin"]'));showCartToast(true,"تمت إضافة المنتج بنجاح ✓");
  }catch(e){const msg=(e.code==="storage/unauthorized")?"تم رفض رفع الصور من Firebase Storage. يلزم ضبط قواعد Storage للسماح للمدير المسجل فقط بالرفع.":(e.message||"تعذر حفظ المنتج");alert("تعذر إكمال الحفظ: "+msg)}
  finally{btn.disabled=false;btn.textContent="حفظ المنتج في المتجر"}
 }
