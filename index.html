@@ -468,31 +468,26 @@ function showCartToast(success=true,message=null){
  clearTimeout(masToastTimer);
  let toast=document.getElementById("masToast");
  if(!toast){toast=document.createElement("div");toast.id="masToast";document.body.appendChild(toast)}
- toast.textContent=message||(success?"تمت الإضافة إلى السلة ✅":"لم يتم الإضافة إلى السلة ❎");
- Object.assign(toast.style,{
-  position:"fixed",left:"0",right:"0",top:"auto",
-  bottom:"calc(22px + env(safe-area-inset-bottom, 0px))",
-  marginLeft:"auto",marginRight:"auto",
-  width:"max-content",maxWidth:"calc(100vw - 32px)",
-  display:"block",boxSizing:"border-box",padding:"14px 22px",
-  borderRadius:"14px",background:success?"#12864f":"#c62828",
-  color:"#fff",fontFamily:"inherit",fontSize:"16px",fontWeight:"800",
-  lineHeight:"1.5",textAlign:"center",direction:"rtl",
-  boxShadow:"0 8px 28px #0005",zIndex:"2147483647",
-  pointerEvents:"none",opacity:"1",visibility:"visible",
-  transform:"none",transition:"opacity .2s ease"
- });
- for(const [k,v] of Object.entries({
-  left:"0",right:"0",top:"auto",
-  bottom:"calc(22px + env(safe-area-inset-bottom, 0px))",
-  "margin-left":"auto","margin-right":"auto",
-  opacity:"1",visibility:"visible",transform:"none"
- })) toast.style.setProperty(k,v,"important");
- masToastTimer=setTimeout(()=>{
-  toast.style.setProperty("opacity","0","important");
-  toast.style.setProperty("visibility","hidden","important");
- },2200);
+ toast.replaceChildren();
+ const row=document.createElement("div");
+ const mark=document.createElement("span");mark.textContent=success?"✓":"!";
+ const label=document.createElement("span");label.textContent=message||(success?"تمت الإضافة إلى السلة":"تعذر تنفيذ العملية");
+ row.append(mark,label);
+ if(success){
+  const action=document.createElement("button");action.type="button";action.textContent="عرض السلة";
+  action.addEventListener("click",()=>{toast.style.opacity="0";toast.style.visibility="hidden";show("cart")});
+  row.append(action);
+ }
+ toast.append(row);
+ Object.assign(toast.style,{position:"fixed",left:"16px",right:"16px",top:"auto",bottom:"calc(18px + env(safe-area-inset-bottom, 0px))",margin:"auto",width:"fit-content",maxWidth:"calc(100vw - 32px)",display:"block",boxSizing:"border-box",padding:"10px",borderRadius:"18px",background:"rgba(20,29,49,.96)",color:"#fff",fontFamily:"inherit",fontSize:"14px",fontWeight:"700",lineHeight:"1.5",textAlign:"right",direction:"rtl",boxShadow:"0 14px 38px #101a3540",border:"1px solid #ffffff20",zIndex:"2147483647",pointerEvents:"auto",opacity:"1",visibility:"visible",transform:"translateY(0)",transition:"opacity .22s ease,transform .22s ease",backdropFilter:"blur(14px)"});
+  Object.assign(row.style,{display:"flex",alignItems:"center",gap:"10px"});
+  Object.assign(mark.style,{width:"28px",height:"28px",flex:"0 0 28px",display:"grid",placeItems:"center",borderRadius:"50%",background:success?"#d9fbe9":"#ffe6e3",color:success?"#087849":"#b42318",fontSize:"17px",fontWeight:"900"});
+  Object.assign(label.style,{maxWidth:"min(58vw,360px)"});
+  const action= row.querySelector("button");
+  if(action)Object.assign(action.style,{background:"#dce6ff",color:"#263f9f",border:"0",borderRadius:"11px",padding:"9px 12px",font:"inherit",fontSize:"12px",whiteSpace:"nowrap"});
+  masToastTimer=setTimeout(()=>{toast.style.opacity="0";toast.style.transform="translateY(8px)";setTimeout(()=>{toast.style.visibility="hidden"},230)},3000);
 }
+window.alert=function(message){showCartToast(false,String(message??"حدث خطأ غير متوقع"));};
 let orderSuccessTimer=null;
 function showOrderSuccess(paymentMethod){const modal=document.getElementById("orderSuccess");if(!modal)return;clearTimeout(orderSuccessTimer);orderSuccessTimer=null;modal.classList.add("show");document.body.style.overflow="hidden"}
 function closeOrderSuccess(){clearTimeout(orderSuccessTimer);orderSuccessTimer=null;const modal=document.getElementById("orderSuccess");if(modal)modal.classList.remove("show");document.body.style.overflow=""}
