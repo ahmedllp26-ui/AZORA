@@ -1,4 +1,4 @@
-const CACHE_NAME = "azora-shell-v10";
+const CACHE_NAME = "azora-shell-v11";
 
 const APP_SHELL = [
   "./",
@@ -37,7 +37,7 @@ self.addEventListener("fetch", event => {
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    fetch(request)
+    fetch(request, request.mode === "navigate" ? {cache:"no-store"} : undefined)
       .then(response => {
         if (response && response.ok) {
           const copy = response.clone();
