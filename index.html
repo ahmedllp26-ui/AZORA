@@ -471,7 +471,7 @@ function showCartToast(success=true,message=null){
  },2200);
 }
 let orderSuccessTimer=null;
-function showOrderSuccess(paymentMethod){const modal=document.getElementById("orderSuccess");if(!modal)return;clearTimeout(orderSuccessTimer);modal.classList.add("show");document.body.style.overflow="hidden";if(paymentMethod!=="تحويل MasterCard"){orderSuccessTimer=setTimeout(closeOrderSuccess,3000)}}
+function showOrderSuccess(paymentMethod){const modal=document.getElementById("orderSuccess");if(!modal)return;clearTimeout(orderSuccessTimer);orderSuccessTimer=null;modal.classList.add("show");document.body.style.overflow="hidden"}
 function closeOrderSuccess(){clearTimeout(orderSuccessTimer);orderSuccessTimer=null;const modal=document.getElementById("orderSuccess");if(modal)modal.classList.remove("show");document.body.style.overflow=""}
 function addCart(id){let p=products.find(x=>x.id===id),x=cart.find(x=>x.id===id);if(!p||p.qty<1)return alert("المنتج غير متوفر");if(x&&x.qty>=p.qty)return alert("الكمية المتوفرة غير كافية");const previous=cart.map(item=>({...item}));try{x?x.qty++:cart.push({id:String(id),qty:1});save();count();showCartToast(true)}catch(e){cart=previous;count();showCartToast(false)}}
 function count(){document.getElementById("count").textContent=cart.reduce((s,x)=>s+x.qty,0)}
@@ -507,9 +507,7 @@ async function checkout(){
    }
    cart=[];save();count();renderCart();
    show("shop");
-   closeOrderSuccess();
-   if(paymentMethod==="تحويل MasterCard")showOrderSuccess(paymentMethod);
-   else showCartToast(true,"تم استلام طلبك بنجاح 💜");
+   showOrderSuccess(paymentMethod);
  }catch(e){alert("تعذر إرسال الطلب: "+e.message)}
 }
 let productPreviewUrls=[];
