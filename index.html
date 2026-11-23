@@ -278,6 +278,83 @@ button.danger{background:#fff0ef!important;color:#b83e38!important}
 .pic img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:center}
 @media(max-width:750px){.pic{height:auto!important;aspect-ratio:1/1;padding:7px}}
 
+
+/* AZORA premium storefront refinement */
+:root{
+ --bg:#f8f5fb;--card:#fff;--ink:#241735;--muted:#887b96;--line:#eee6f3;
+ --brand:#54218c;--brand2:#8950bd;--accent:#e8c879;
+ --shadow:0 14px 38px rgba(52,25,78,.075)
+}
+body{background:linear-gradient(180deg,#fbf9fd 0%,#f7f3fa 48%,#faf8fc 100%);color:var(--ink)}
+.shell{max-width:1320px;padding-inline:clamp(13px,3vw,34px)}
+.top{border:1px solid rgba(235,225,243,.8);border-top:0;border-radius:0 0 22px 22px;box-shadow:0 8px 28px rgba(54,27,79,.055)}
+.brand{gap:14px}.brand small{letter-spacing:3.5px;color:#9b8aa9}
+.mark{width:48px;height:48px;border-radius:17px;background:linear-gradient(145deg,#2b1244,#6b329e 65%,#a56cc7)!important;border:1px solid #e6c77d;box-shadow:0 9px 22px #55218c30!important}
+.nav button{border:1px solid transparent;border-radius:13px;font-size:12px}
+.nav button:not(:first-child){background:#f5eff9;color:#56327a;box-shadow:none}
+.nav button:focus-visible,.nav button:hover{border-color:#dfc9ef}
+.hero{min-height:190px!important;padding:clamp(23px,4vw,42px)!important;border:1px solid #ffffff26;border-radius:28px!important;background:linear-gradient(115deg,#241039 0%,#512080 54%,#8950bd 100%)!important;box-shadow:0 20px 48px rgba(69,30,105,.2)!important}
+.hero h1{font-size:clamp(25px,4vw,37px)!important;letter-spacing:-.7px}
+.hero p{max-width:560px;font-size:13px!important;line-height:1.9!important;color:#eee3f7!important}
+.hero .tag{background:#ffffff15;border-color:#ffffff35;backdrop-filter:blur(8px)}
+.hero .orb{width:112px!important;height:112px!important;border:1px solid #f1d68b80;box-shadow:0 14px 35px #170a2b66, inset 0 0 0 7px #ffffff18!important}
+.hero button{border:1px solid #f8e7b8!important;box-shadow:0 7px 18px #180c2c35!important}
+.head{margin:30px 0 15px!important}
+.head h2,.section-heading{font-size:21px!important;letter-spacing:-.3px}
+.catalog-head{align-items:center}
+.filters{gap:11px}
+.searchbox,.sortTrigger{min-height:51px;border-radius:15px!important;background:#fff;box-shadow:0 5px 18px rgba(52,25,78,.045)}
+.searchbox span{color:#8552ad}
+.chips{gap:9px;padding-block:5px 17px}
+.chip{border:1px solid #eee5f4;background:#fff;color:#6f607c;border-radius:30px;padding:10px 16px;font-weight:700;box-shadow:0 4px 12px #3b205008}
+.chip.active{background:#54218c!important;color:#fff!important;border-color:#54218c!important;box-shadow:0 7px 17px #54218c30}
+.grid{grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:19px}
+.product{border:1px solid #eee7f2!important;border-radius:22px!important;background:#fff;box-shadow:0 7px 24px rgba(48,24,69,.055)!important;overflow:hidden}
+.product:hover{border-color:#dfc9ed!important;box-shadow:0 16px 35px rgba(64,31,91,.12)!important}
+.pic{position:relative;background:linear-gradient(145deg,#faf7fc,#f2edf7)!important;padding:13px!important;aspect-ratio:1/1}
+.pic:after{content:"";position:absolute;inset:9px;border:1px solid #fff9;border-radius:15px;pointer-events:none}
+.pic img{mix-blend-mode:multiply;transition:transform .35s ease}
+.product:hover .pic img{transform:scale(1.045)}
+.pbody{padding:15px 16px 16px}
+.pbody h3{font-size:14px!important;font-weight:800;line-height:1.7;min-height:46px;color:#30203e}
+.product-specs{font-size:11px;line-height:1.8}
+.price{font-size:19px!important;color:#59228f!important;letter-spacing:-.3px}
+.badge{background:#f0f8f2;color:#26734e;border:1px solid #dcefe2}
+.pfoot{align-items:center}
+.pfoot button{border-radius:12px;min-height:42px;padding:10px 14px;background:linear-gradient(135deg,#54218c,#8150ad)!important;box-shadow:0 6px 15px #54218c24!important}
+.heart{top:12px;left:12px;width:39px;height:39px;border:1px solid #eee5f4;backdrop-filter:blur(8px)}
+.panel,.stat,.order-card{border:1px solid #eee7f2!important;border-radius:20px!important;box-shadow:0 8px 25px rgba(48,24,69,.05)!important}
+.stat{background:linear-gradient(145deg,#fff,#fcf9fe)}
+.admin-topbar{border:1px solid #ffffff20}
+.admin-side{border-radius:20px;border-color:#eee6f3}
+.admin-tab.active{border-radius:12px}
+.field{background:#fdfcff}
+footer{color:#9b8da5}
+@media(max-width:750px){
+ .top{border-radius:0 0 17px 17px}
+ .hero{min-height:0!important;border-radius:21px!important;padding:20px 17px!important}
+ .hero .orb{width:78px!important;height:78px!important;font-size:37px!important}
+ .hero h1{font-size:23px!important}
+ .hero p{font-size:11px!important}
+ .head{margin:23px 0 12px!important}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+ .product{border-radius:17px!important}
+ .pic{aspect-ratio:1/1;padding:8px!important}
+ .pic:after{inset:6px;border-radius:11px}
+ .pbody{padding:10px}
+ .pbody h3{font-size:12px!important;min-height:42px}
+ .price{font-size:15px!important}
+ .pfoot button{font-size:11px;padding:9px 7px;min-height:40px}
+ .badge{font-size:10px;padding:5px 7px}
+ .chip{padding:9px 13px;font-size:11px}
+ .searchbox,.sortTrigger{min-height:46px}
+}
+@media(prefers-reduced-motion:no-preference){
+ .product{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease!important}
+ .product:hover{transform:translateY(-4px)}
+ .pic img{transition:transform .3s ease}
+}
+
 </style><script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
