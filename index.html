@@ -470,8 +470,9 @@ function showCartToast(success=true){
   toast.style.setProperty("visibility","hidden","important");
  },2200);
 }
-function showOrderSuccess(){const modal=document.getElementById("orderSuccess");if(modal){modal.classList.add("show");document.body.style.overflow="hidden"}}
-function closeOrderSuccess(){const modal=document.getElementById("orderSuccess");if(modal)modal.classList.remove("show");document.body.style.overflow=""}
+let orderSuccessTimer=null;
+function showOrderSuccess(paymentMethod){const modal=document.getElementById("orderSuccess");if(!modal)return;clearTimeout(orderSuccessTimer);modal.classList.add("show");document.body.style.overflow="hidden";if(paymentMethod!=="تحويل MasterCard"){orderSuccessTimer=setTimeout(closeOrderSuccess,3000)}}
+function closeOrderSuccess(){clearTimeout(orderSuccessTimer);orderSuccessTimer=null;const modal=document.getElementById("orderSuccess");if(modal)modal.classList.remove("show");document.body.style.overflow=""}
 function addCart(id){let p=products.find(x=>x.id===id),x=cart.find(x=>x.id===id);if(!p||p.qty<1)return alert("المنتج غير متوفر");if(x&&x.qty>=p.qty)return alert("الكمية المتوفرة غير كافية");const previous=cart.map(item=>({...item}));try{x?x.qty++:cart.push({id:String(id),qty:1});save();count();showCartToast(true)}catch(e){cart=previous;count();showCartToast(false)}}
 function count(){document.getElementById("count").textContent=cart.reduce((s,x)=>s+x.qty,0)}
 function renderCart(){let sub=0;document.getElementById("cartContent").innerHTML=cart.length?cart.map(x=>{let p=products.find(y=>y.id===x.id);if(!p)return"";sub+=p.sell*x.qty;return `<div class="cartrow"><div><b>${p.name}</b><div class="muted">${money(p.sell)} × ${x.qty}</div></div><div class="actions"><button class="secondary" onclick="changeQty('${p.id}',-1)">−</button><button class="secondary" onclick="changeQty('${p.id}',1)">+</button><button class="danger" onclick="removeItem('${p.id}')">حذف</button></div></div>`}).join(""):'<div class="empty">السلة فارغة. أضف منتجات للمتابعة.</div>';document.getElementById("shipLabel").textContent=money(shipping);document.getElementById("grandTotal").textContent="الإجمالي مع التوصيل: "+money(sub+(cart.length?shipping:0))}
@@ -506,7 +507,7 @@ async function checkout(){
    }
    cart=[];save();count();renderCart();
    show("shop");
-   showOrderSuccess();
+   showOrderSuccess(paymentMethod);
  }catch(e){alert("تعذر إرسال الطلب: "+e.message)}
 }
 let productPreviewUrls=[];
