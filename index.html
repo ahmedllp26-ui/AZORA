@@ -401,8 +401,9 @@ function updateProfitLabel(){const src=document.getElementById("productSource").
 function toggleProvinceMenu(){const menu=document.getElementById("provinceMenu"),trigger=document.getElementById("provinceTrigger"),open=menu.classList.toggle("open");trigger.setAttribute("aria-expanded",String(open))}
 function setProvince(index){const select=document.getElementById("province");select.selectedIndex=index;document.getElementById("provinceValue").textContent=select.value;document.getElementById("provinceMenu").classList.remove("open");document.getElementById("provinceTrigger").setAttribute("aria-expanded","false");document.querySelectorAll("#provinceMenu .category-option").forEach((b,i)=>{b.classList.toggle("selected",i===index);b.querySelector(".category-check").textContent=i===index?"✓":""})}
 function initProvincePicker(){const select=document.getElementById("province"),value=document.getElementById("provinceValue"),menu=document.getElementById("provinceMenu");if(!select||!menu)return;value.textContent=select.value;menu.innerHTML=Array.from(select.options).map((o,i)=>'<button type="button" class="category-option '+(i===select.selectedIndex?'selected':'')+'" onclick="setProvince('+i+')"><span>'+o.textContent+'</span><span class="category-check">'+(i===select.selectedIndex?'✓':'')+'</span></button>').join("")}
+function selectStoreCategory(index){if(!cats[index])return;active=cats[index];favoritesOnly=false;drawChips();renderProducts()}
 function drawChips(){
- document.getElementById("chips").innerHTML=cats.map(c=>'<button class="chip '+(active===c?'active':'')+'" onclick="active=\''+c+'\';drawChips();renderProducts()">'+c+'</button>').join("");
+ document.getElementById("chips").innerHTML=cats.map((c,i)=>'<button type="button" class="chip '+(active===c?'active':'')+'" onclick="selectStoreCategory('+i+')">'+c+'</button>').join("");
  const pc=document.getElementById("pc");
  pc.innerHTML=cats.slice(1).map(c=>'<option value="'+c+'">'+c+'</option>').join("");
  if(!pc.value&&pc.options.length)pc.selectedIndex=0;
@@ -688,7 +689,7 @@ auth.onAuthStateChanged(async user=>{
 });
 loadProducts().catch(e=>console.warn("Firebase products:",e));
 window.show=show;window.adminTab=adminTab;window.managerLogin=managerLogin;window.cancelManagerLogin=cancelManagerLogin;
-window.renderProducts=renderProducts;window.clearSearch=clearSearch;window.toggleSortMenu=toggleSortMenu;window.setSort=setSort;window.toggleFavorite=toggleFavorite;window.toggleFavoriteView=toggleFavoriteView;window.showFavorites=showFavorites;window.addCart=addCart;window.changeQty=changeQty;window.removeItem=removeItem;
+window.selectStoreCategory=selectStoreCategory;window.renderProducts=renderProducts;window.clearSearch=clearSearch;window.toggleSortMenu=toggleSortMenu;window.setSort=setSort;window.toggleFavorite=toggleFavorite;window.toggleFavoriteView=toggleFavoriteView;window.showFavorites=showFavorites;window.addCart=addCart;window.changeQty=changeQty;window.removeItem=removeItem;
 window.toggleProvinceMenu=toggleProvinceMenu;window.setProvince=setProvince;window.closeOrderSuccess=closeOrderSuccess;window.checkout=checkout;window.addProduct=addProduct;window.saveShipping=saveShipping;window.deleteProduct=deleteProduct;window.editPrice=editPrice;window.saveProductEdit=saveProductEdit;window.closeProductEdit=closeProductEdit;window.openProductDetail=openProductDetail;window.selectDetailImage=selectDetailImage;window.closeProductDetail=closeProductDetail;
 
 });
