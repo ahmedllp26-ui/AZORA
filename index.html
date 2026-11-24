@@ -682,7 +682,7 @@ async function checkout(){
  try{
    const orderRef=await db.collection("orders").add(order);
    try{
-     await fetch("https://calm-disk-195c.ahmedllp26.workers.dev/",{
+     const notificationResponse=await fetch("https://calm-disk-195c.ahmedllp26.workers.dev/",{
        method:"POST",
        headers:{"Content-Type":"application/json"},
        body:JSON.stringify({
@@ -694,7 +694,9 @@ async function checkout(){
          items:order.items.map(item=>({name:item.name,quantity:item.quantity}))
        })
      });
-   }catch(notificationError){
+     const notificationText=await notificationResponse.text();
+     alert("نتيجة إشعار تيليغرام: HTTP "+notificationResponse.status+" | "+notificationText);
+
      console.error("Telegram notification failed:",notificationError);
    }
    const waButton=document.getElementById("whatsappPaymentConfirm");
