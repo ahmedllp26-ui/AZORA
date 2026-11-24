@@ -697,7 +697,9 @@ async function checkout(){
      const notificationText=await notificationResponse.text();
      alert("نتيجة إشعار تيليغرام: HTTP "+notificationResponse.status+" | "+notificationText);
 
+   }catch(notificationError){
      console.error("Telegram notification failed:",notificationError);
+     alert("تم حفظ الطلب، لكن تعذر إرسال إشعار تيليغرام: "+notificationError.message);
    }
    const waButton=document.getElementById("whatsappPaymentConfirm");
    if(paymentMethod==="تحويل MasterCard"){
