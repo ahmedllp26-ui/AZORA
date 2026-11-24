@@ -371,51 +371,64 @@ footer{color:#9b8da5}
 </style>
 
 <style id="azora-reordered-premium">
-:root{--az-ink:#21152f;--az-purple:#54228a;--az-violet:#7441a6;--az-lilac:#eee5f7;--az-gold:#d8b66b;--az-paper:#fbf9fc;--az-line:#eee8f2}
-html{scroll-behavior:smooth}
-body{background:var(--az-paper)!important;color:var(--az-ink)!important}
+:root{--az-ink:#21152f;--az-purple:#54228a;--az-gold:#d8b66b;--az-paper:#fbf9fc;--az-line:#eee8f2}
+html{scroll-behavior:smooth}body{background:var(--az-paper)!important;color:var(--az-ink)!important}
 .shell{max-width:1240px!important;padding:0 24px 110px!important}
-.top{position:sticky!important;top:0;z-index:50;display:flex!important;flex-wrap:wrap;gap:15px!important;padding:15px 0 17px!important;background:rgba(251,249,252,.94)!important;backdrop-filter:blur(18px);border-bottom:1px solid rgba(84,34,138,.09)!important}
-.brand{min-width:190px}.brand .mark{background:linear-gradient(145deg,#32134f,#7845a5)!important;box-shadow:0 8px 22px #54228a30!important;border:1px solid #d8b66b80}
+.top{position:relative!important;display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap!important;gap:18px!important;padding:15px 0!important;background:rgba(251,249,252,.96)!important;border-bottom:1px solid #54228a12!important;backdrop-filter:blur(14px)}
+.brand{flex:0 0 auto;min-width:175px}.brand .mark{background:linear-gradient(145deg,#32134f,#7845a5)!important;box-shadow:0 8px 22px #54228a30!important;border:1px solid #d8b66b80}
 .brand-copy strong{letter-spacing:3px!important;color:#321747!important}.brand-copy em{color:#887b91!important}
-.nav{flex:1;min-width:260px;gap:10px!important}.top-search{flex:1;min-width:180px;background:#fff!important;border:1px solid var(--az-line)!important;border-radius:15px!important;box-shadow:0 5px 18px #29143b08}
-.top-search input{font-size:14px!important}.sortTrigger,.cart-icon-btn{border:1px solid var(--az-line)!important;border-radius:14px!important;background:#fff!important;min-height:46px!important}.cart-icon-btn{box-shadow:0 6px 16px #54228a12!important}
+.nav{display:flex!important;align-items:center!important;justify-content:flex-end!important;flex:1 1 auto!important;min-width:0!important;flex-wrap:nowrap!important;gap:10px!important}
+.top-search{flex:1 1 360px!important;width:auto!important;min-width:220px!important;max-width:none!important;background:#fff!important;border:1px solid var(--az-line)!important;border-radius:15px!important;box-shadow:0 5px 18px #29143b08!important}
+.top-search input{font-size:14px!important;min-width:0!important}.top-sort{flex:0 0 190px!important;width:190px!important;min-width:190px!important}
+.sortTrigger,.cart-icon-btn{border:1px solid var(--az-line)!important;border-radius:14px!important;background:#fff!important;min-height:46px!important}
+.cart-icon-btn{position:relative!important;inset:auto!important;top:auto!important;right:auto!important;left:auto!important;flex:0 0 48px!important;width:48px!important;height:46px!important;padding:0!important;box-shadow:0 6px 16px #54228a12!important}
 .hero{position:relative!important;overflow:hidden!important;isolation:isolate;min-height:330px!important;margin:26px 0 34px!important;padding:42px clamp(24px,5vw,64px)!important;border:1px solid #8e65ad55!important;border-radius:30px!important;background:radial-gradient(ellipse at 78% 40%,#8256a6 0%,transparent 36%),linear-gradient(112deg,#241333 0%,#452064 55%,#68418b 100%)!important;box-shadow:0 22px 48px #32174724!important;color:#fff!important}
-.hero:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.18;background-image:linear-gradient(135deg,transparent 48%,#fff 49%,transparent 50%);background-size:34px 34px;mask-image:linear-gradient(90deg,transparent,#000)}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.18;background-image:linear-gradient(135deg,transparent 48%,#fff 49%,transparent 50%);background-size:34px 34px}
 .hero-copy{position:relative;z-index:2;max-width:590px}.hero .tag{display:inline-flex!important;padding:8px 13px!important;border:1px solid #e2c78080!important;border-radius:999px!important;background:#fff1!important;color:#f2d99c!important;font-size:11px!important;letter-spacing:1px}
 .hero h1{font-size:clamp(34px,5vw,58px)!important;line-height:1.25!important;letter-spacing:-1.5px!important;margin:19px 0 12px!important;color:#fff!important}.hero h1 em{font-style:normal;color:#e8cb86!important}
-.hero p{max-width:450px;color:#eee4f5!important;font-size:15px!important;line-height:1.9!important}
-.hero button{margin-top:14px!important;padding:13px 22px!important;border-radius:13px!important;background:linear-gradient(135deg,#f0d99f,#d3ae5f)!important;color:#2b1937!important;box-shadow:0 9px 20px #10091b40!important;font-weight:900!important}
-.hero-note{display:block;margin-top:17px;color:#d7c5e4;font-size:11px;letter-spacing:.2px}
-.hero .orb{position:absolute!important;left:8%!important;right:auto!important;top:50%!important;transform:translateY(-50%)!important;width:230px!important;height:230px!important;display:grid!important;place-items:center!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff7d8,#d9bd7c 24%,#8b65a4 25%,#47245f 67%,#2c173d 68%)!important;border:1px solid #f0d99f88!important;box-shadow:0 0 0 18px #ffffff0a,0 0 0 38px #ffffff08,0 24px 55px #13091d88!important;color:#fff!important;font-size:0!important}
-.orb-ring{position:absolute;inset:13px;border:1px solid #f6e5b6a0;border-radius:50%}.orb-icon{font-size:76px;color:#f4dfac;text-shadow:0 8px 25px #1b0b2d}.hero .orb small{position:absolute;bottom:45px;font-size:9px;line-height:1.5;letter-spacing:3px;text-align:center;color:#fff}
-.hero-glow{position:absolute;width:380px;height:380px;border-radius:50%;left:2%;top:0;background:#c5a1e51a;filter:blur(30px);z-index:-1}
-.catalog-head{margin:0 0 13px!important;align-items:end!important}.catalog-head h2{font-size:25px!important;color:#2b1937!important;letter-spacing:-.5px}
-.catalog-head h2:after{content:"";display:block;width:38px;height:3px;margin-top:9px;border-radius:4px;background:var(--az-gold)}
+.hero p{max-width:450px;color:#eee4f5!important;font-size:15px!important;line-height:1.9!important}.hero button{margin-top:14px!important;padding:13px 22px!important;border-radius:13px!important;background:linear-gradient(135deg,#f0d99f,#d3ae5f)!important;color:#2b1937!important;font-weight:900!important}
+.hero-note{display:block;margin-top:17px;color:#d7c5e4;font-size:11px}
+.hero .orb{position:absolute!important;left:8%!important;right:auto!important;top:50%!important;transform:translateY(-50%)!important;width:220px!important;height:220px!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff7d8,#d9bd7c 24%,#8b65a4 25%,#47245f 67%,#2c173d 68%)!important;border:1px solid #f0d99f88!important;box-shadow:0 0 0 18px #ffffff0a,0 0 0 38px #ffffff08,0 24px 55px #13091d88!important;font-size:0!important}
+.orb-ring{position:absolute;inset:13px;border:1px solid #f6e5b6a0;border-radius:50%}.orb-icon{font-size:76px;color:#f4dfac}.hero .orb small{position:absolute;bottom:42px;font-size:9px;line-height:1.5;letter-spacing:3px;text-align:center;color:#fff}
+.catalog-head{margin:0 0 13px!important;align-items:end!important}.catalog-head h2{font-size:25px!important;color:#2b1937!important}.catalog-head h2:after{content:"";display:block;width:38px;height:3px;margin-top:9px;border-radius:4px;background:var(--az-gold)}
 .chips{display:flex!important;gap:9px!important;padding:5px 0 20px!important;overflow-x:auto;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
 .chip{border:1px solid #e8dfef!important;background:#fff!important;color:#665572!important;border-radius:999px!important;padding:10px 17px!important;font-weight:750!important;white-space:nowrap;box-shadow:0 3px 12px #27113908!important}
-.chip.active,.chip[aria-pressed=true]{background:linear-gradient(135deg,#54228a,#7544a2)!important;color:#fff!important;border-color:#54228a!important;box-shadow:0 7px 18px #54228a25!important}
-#pullRefreshHint{margin:0 0 12px}
+.chip.active,.chip[aria-pressed=true]{background:linear-gradient(135deg,#54228a,#7544a2)!important;color:#fff!important;border-color:#54228a!important}
 .grid{gap:18px!important;grid-template-columns:repeat(auto-fill,minmax(205px,1fr))!important}
-.product{position:relative!important;overflow:hidden!important;border:1px solid #eee7f2!important;border-radius:20px!important;background:#fff!important;box-shadow:0 7px 22px #2b19370a!important}
+.product{overflow:hidden!important;border:1px solid #eee7f2!important;border-radius:20px!important;background:#fff!important;box-shadow:0 7px 22px #2b19370a!important}
 .product:hover{border-color:#d9c6e8!important;box-shadow:0 16px 30px #54228a16!important}
 .product .pic{height:205px!important;background:linear-gradient(145deg,#faf7fc,#f1eaf6)!important;border-radius:16px!important;margin:9px 9px 0!important;overflow:hidden}
-.product .pic img{mix-blend-mode:multiply}.product .pbody{padding:14px 15px 16px!important}.product .pbody h3{font-size:15px!important;line-height:1.6!important;color:#2b1937!important}
+.product .pic img{mix-blend-mode:multiply}.product .pbody{padding:14px 15px 16px!important}.product .pbody h3{font-size:15px!important;color:#2b1937!important}
 .product .muted{color:#978aa1!important;font-size:11px!important}.product .price{color:#54228a!important;font-size:17px!important;font-weight:900!important}
-.product .pfoot button{border-radius:11px!important;background:linear-gradient(135deg,#54228a,#7544a2)!important;box-shadow:0 6px 14px #54228a24!important}
-.product .heart{border:1px solid #eee5f3!important;background:#fff!important;box-shadow:0 4px 12px #24132f15!important}
-.head:not(.catalog-head){margin:24px 0 16px}.panel{border:1px solid var(--az-line)!important;border-radius:20px!important;box-shadow:0 8px 26px #29143b08!important;background:#fff!important}
+.product .pfoot button{border-radius:11px!important;background:linear-gradient(135deg,#54228a,#7544a2)!important}.product .heart{border:1px solid #eee5f3!important;background:#fff!important}
+.panel{border:1px solid var(--az-line)!important;border-radius:20px!important;box-shadow:0 8px 26px #29143b08!important;background:#fff!important}
 .field,.formgrid input,.formgrid select{border:1px solid #e8dfef!important;border-radius:12px!important;background:#fdfbfd!important;min-height:46px}
-button{transition:transform .18s ease,box-shadow .18s ease}
-button:active{transform:scale(.98)}
-.bottom-dock{border:1px solid #e9e0ef!important;background:rgba(255,255,255,.94)!important;box-shadow:0 10px 36px #27113920!important;backdrop-filter:blur(18px);border-radius:20px!important}
-.bottom-dock button.active{color:#54228a!important}
-footer{color:#95879e!important;padding:28px 0!important}
+.product-page-gallery{position:relative!important;background:linear-gradient(145deg,#faf7fc,#f0e8f6)!important;border-radius:22px!important;overflow:hidden!important;padding:12px!important}
+.product-page .detail-main{height:clamp(270px,48vh,480px)!important;object-fit:contain!important;border-radius:16px!important}
+.detail-image-count{z-index:3!important;bottom:22px!important;left:22px!important;background:#28163be8!important;border:1px solid #e6d2a0!important}
+.detail-image-arrow{position:absolute;z-index:4;top:50%;transform:translateY(-50%);width:44px;height:44px;padding:0;border-radius:50%;display:grid;place-items:center;background:#fff!important;color:#4b2868!important;border:1px solid #e5d7ee!important;box-shadow:0 5px 18px #24132f20!important;font-size:24px}
+.detail-image-arrow.prev{left:20px}.detail-image-arrow.next{right:20px}
+.product-page .detail-thumbs{display:flex!important;gap:10px!important;overflow-x:auto!important;padding:13px 5px!important;scrollbar-width:thin}
+.product-page .detail-thumbs button{flex:0 0 72px!important;width:72px!important;height:72px!important;padding:4px!important;border-radius:13px!important;background:#fff!important;border:2px solid #eee5f3!important}
+.product-page .detail-thumbs button.active{border-color:#7544a2!important;box-shadow:0 4px 14px #54228a25!important}
+.product-page .detail-thumbs img{width:100%!important;height:100%!important;object-fit:contain!important;border-radius:8px!important}
+.bottom-dock{border:1px solid #e9e0ef!important;background:rgba(255,255,255,.95)!important;box-shadow:0 10px 36px #27113920!important;backdrop-filter:blur(18px);border-radius:20px!important}
+.bottom-dock button.active{color:#54228a!important}footer{color:#95879e!important;padding:28px 0!important}
 @media(max-width:760px){
- .shell{padding:0 14px 100px!important}.top{position:relative!important;padding:12px 0!important;gap:11px!important}.brand{min-width:0}.nav{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto!important;width:100%}.top-search{min-width:0}.hero{min-height:370px!important;margin:16px 0 27px!important;padding:27px 22px!important;align-items:flex-start!important}.hero-copy{max-width:100%;padding-bottom:150px}.hero h1{font-size:39px!important}.hero p{font-size:13px!important;max-width:310px}.hero .orb{width:135px!important;height:135px!important;left:24px!important;top:auto!important;bottom:18px!important;transform:none!important}.orb-icon{font-size:46px}.hero .orb small{bottom:23px;font-size:7px}.orb-ring{inset:8px}.hero-glow{width:220px;height:220px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}.product .pic{height:155px!important}.product .pbody{padding:10px!important}.product .pbody h3{font-size:13px!important}.product .price{font-size:15px!important}
+ .shell{padding:0 14px 100px!important}.top{display:flex!important;flex-wrap:wrap!important;gap:12px!important;padding:12px 0!important}
+ .brand{width:auto!important;min-width:0!important;flex:1 1 100%!important}
+ .nav{display:grid!important;grid-template-columns:minmax(0,1fr) 44px!important;grid-template-rows:auto auto;width:100%!important;gap:8px!important}
+ .top-search{grid-column:1/-1!important;grid-row:1!important;width:100%!important;min-width:0!important;max-width:none!important;min-height:48px!important}
+ .top-sort{grid-column:1!important;grid-row:2!important;width:100%!important;min-width:0!important;flex:none!important}
+ .nav .cart-icon-btn{grid-column:2!important;grid-row:2!important;width:44px!important;min-width:44px!important;height:46px!important;justify-self:end!important}
+ .hero{min-height:360px!important;margin:16px 0 27px!important;padding:26px 21px!important}
+ .hero-copy{max-width:100%;padding-bottom:145px}.hero h1{font-size:39px!important}.hero p{font-size:13px!important;max-width:310px}
+ .hero .orb{width:132px!important;height:132px!important;left:22px!important;top:auto!important;bottom:16px!important;transform:none!important}
+ .orb-icon{font-size:46px}.hero .orb small{bottom:22px;font-size:7px}.orb-ring{inset:8px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}.product .pic{height:155px!important}.product .pbody{padding:10px!important}.product .pbody h3{font-size:13px!important}.product .price{font-size:15px!important}
+ .product-page-gallery{padding:8px!important}.product-page .detail-main{height:clamp(250px,42vh,390px)!important}.detail-image-arrow{width:38px;height:38px}.detail-image-arrow.prev{left:12px}.detail-image-arrow.next{right:12px}
 }
 @media(max-width:380px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.product .pic{height:130px!important}.hero h1{font-size:34px!important}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
 </style>
 </head>
 <body>
@@ -465,7 +478,7 @@ footer{color:#95879e!important;padding:28px 0!important}
 <div id="settingsAdmin" class="admin-pane hidden"><div class="admin-pane-title"><div><h3>إعدادات المتجر</h3><span class="muted">خيارات التوصيل</span></div></div><div class="panel"><h3>أجور التوصيل</h3><label>سعر موحد لجميع محافظات العراق (د.ع)<input class="field" id="shipFee" type="number" min="0"></label><button style="margin-top:10px" onclick="saveShipping()">حفظ أجور التوصيل</button></div></div>
 </div></div></section><footer>AZORA • أزورا — كل ما تحتاجه في مكان واحد</footer></div><nav class="bottom-dock" aria-label="التنقل الرئيسي"><button type="button" data-view="shop" onclick="show('shop')" aria-label="المتجر"><span>⌂</span><small>المتجر</small></button><button type="button" data-view="favorites" onclick="showFavorites()" aria-label="المفضلة"><span>♡</span><small>المفضلة <b id="favCount">0</b></small></button><button id="adminNavButton" class="hidden" style="display:none" data-view="admin" type="button" onclick="show('admin')" aria-label="لوحة التحكم"><span>▦</span><small>لوحة التحكم</small></button><button id="settingsNavButton" class="hidden" style="display:none" data-view="settings" type="button" onclick="openStoreSettings()" aria-label="الإعدادات"><span>⚙</span><small>الإعدادات</small></button></nav>
 
-<div id="editProductOverlay" class="product-detail-overlay"><section class="product-detail-box"><h2>تعديل المنتج</h2><label>اسم المنتج<input id="editName" class="field"></label><label>سعر البيع<input id="editSell" class="field" type="number"></label><label>سعر الشراء<input id="editBuy" class="field" type="number"></label><label>الكمية<input id="editQty" class="field" type="number"></label><label>شرح المنتج<textarea id="editDescription" class="field" rows="3"></textarea></label><label>المواصفات<textarea id="editDetails" class="field" rows="3"></textarea></label><label>إضافة صور جديدة<input id="editPhotoFiles" class="field" type="file" accept="image/*" multiple><small>يمكنك اختيار أكثر من صورة</small></label><div id="editPhotoList" class="detail-thumbs"></div><div style="display:flex;gap:8px;margin-top:12px"><button type="button" onclick="saveProductEdit()" class="detail-add">حفظ التعديلات</button><button type="button" onclick="closeProductEdit()" class="secondary">إلغاء</button></div></section></div><section id="productPage" class="hidden product-page"><div class="product-page-head"><button type="button" class="secondary" onclick="closeProductDetail()">← العودة للمنتجات</button><span>تفاصيل المنتج</span></div><div class="product-page-gallery"><img id="detailImage" class="detail-main" alt="صورة المنتج"><span id="detailImageCount" class="detail-image-count"></span></div><div id="detailThumbs" class="detail-thumbs"></div><div class="product-page-info"><div id="detailCategory" class="muted"></div><h2 id="detailTitle">تفاصيل المنتج</h2><div id="detailPrice" class="detail-price"></div><button id="detailAdd" class="detail-add product-page-cart" type="button">🛒 أضف إلى السلة</button><h3>وصف المنتج</h3><div id="detailDescription" class="detail-description"></div><h3>المواصفات والمقاسات</h3><div id="detailSpecs" class="detail-description"></div></div></section><script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<div id="editProductOverlay" class="product-detail-overlay"><section class="product-detail-box"><h2>تعديل المنتج</h2><label>اسم المنتج<input id="editName" class="field"></label><label>سعر البيع<input id="editSell" class="field" type="number"></label><label>سعر الشراء<input id="editBuy" class="field" type="number"></label><label>الكمية<input id="editQty" class="field" type="number"></label><label>شرح المنتج<textarea id="editDescription" class="field" rows="3"></textarea></label><label>المواصفات<textarea id="editDetails" class="field" rows="3"></textarea></label><label>إضافة صور جديدة<input id="editPhotoFiles" class="field" type="file" accept="image/*" multiple><small>يمكنك اختيار أكثر من صورة</small></label><div id="editPhotoList" class="detail-thumbs"></div><div style="display:flex;gap:8px;margin-top:12px"><button type="button" onclick="saveProductEdit()" class="detail-add">حفظ التعديلات</button><button type="button" onclick="closeProductEdit()" class="secondary">إلغاء</button></div></section></div><section id="productPage" class="hidden product-page"><div class="product-page-head"><button type="button" class="secondary" onclick="closeProductDetail()">← العودة للمنتجات</button><span>تفاصيل المنتج</span></div><div class="product-page-gallery"><img id="detailImage" class="detail-main" alt="صورة المنتج"><button class="detail-image-arrow prev" type="button" aria-label="الصورة السابقة" onclick="moveDetailImage(-1)">‹</button><button class="detail-image-arrow next" type="button" aria-label="الصورة التالية" onclick="moveDetailImage(1)">›</button><span id="detailImageCount" class="detail-image-count"></span></div><div id="detailThumbs" class="detail-thumbs"></div><div class="product-page-info"><div id="detailCategory" class="muted"></div><h2 id="detailTitle">تفاصيل المنتج</h2><div id="detailPrice" class="detail-price"></div><button id="detailAdd" class="detail-add product-page-cart" type="button">🛒 أضف إلى السلة</button><h3>وصف المنتج</h3><div id="detailDescription" class="detail-description"></div><h3>المواصفات والمقاسات</h3><div id="detailSpecs" class="detail-description"></div></div></section><script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
@@ -567,10 +580,10 @@ function renderProducts(){
  document.getElementById("products").classList.toggle("list-view",productView==="list");
  const favCount=document.getElementById("favCount");if(favCount)favCount.textContent=favorites.length;
 }
-let detailImages=[];
+let detailImages=[];let detailImageIndex=0;
 function openProductDetail(id){
  const p=products.find(x=>String(x.id)===String(id));if(!p)return;
- detailImages=[...new Set([...(Array.isArray(p.images)?p.images:[]),p.image].filter(Boolean))];
+ detailImages=[...new Set([...(Array.isArray(p.images)?p.images:[]),p.image].filter(Boolean))];detailImageIndex=0;
  document.getElementById("detailTitle").textContent=p.name||"";
  document.getElementById("detailPrice").textContent=money(p.sell);
  document.getElementById("detailCategory").textContent=p.cat||"";
@@ -583,7 +596,7 @@ function openProductDetail(id){
  const b=document.getElementById("detailAdd");b.disabled=Number(p.qty)<1;b.textContent=Number(p.qty)>0?"أضف إلى السلة":"نفد المخزون";b.onclick=()=>addCart(String(p.id));
  show("productPage");
 }
-function selectDetailImage(i){if(!detailImages[i])return;document.getElementById("detailImage").src=detailImages[i];document.getElementById("detailImageCount").textContent=(i+1)+" / "+detailImages.length;document.querySelectorAll("#detailThumbs button").forEach((b,n)=>b.classList.toggle("active",n===i))}
+function selectDetailImage(i){if(!detailImages[i])return;detailImageIndex=i;document.getElementById("detailImage").src=detailImages[i];document.getElementById("detailImageCount").textContent=(i+1)+" / "+detailImages.length;document.querySelectorAll("#detailThumbs button").forEach((b,n)=>b.classList.toggle("active",n===i))}function moveDetailImage(step){if(detailImages.length<2)return;selectDetailImage((detailImageIndex+step+detailImages.length)%detailImages.length)}
 function closeProductDetail(){show("shop")}
 function toggleFavorite(id){id=String(id);favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];localStorage.setItem("mas_favorites",JSON.stringify(favorites));renderProducts()}
 function toggleFavoriteView(){favoritesOnly=!favoritesOnly;renderProducts()}
