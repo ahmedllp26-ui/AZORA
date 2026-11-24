@@ -684,7 +684,7 @@ async function checkout(){
    try{
      const notificationResponse=await fetch("https://calm-disk-195c.ahmedllp26.workers.dev/",{
        method:"POST",
-       headers:{"Content-Type":"application/json"},
+       headers:{"Content-Type":"text/plain;charset=UTF-8"},
        body:JSON.stringify({
          orderId:orderRef.id,
          name:order.name,
