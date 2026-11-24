@@ -687,6 +687,8 @@ async function checkout(){
        headers:{"Content-Type":"application/json"},
        body:JSON.stringify({
          orderId:orderRef.id,
+         name:order.name,
+         phone:order.phone,
          total:order.total,
          province:order.province,
          items:order.items.map(item=>({name:item.name,quantity:item.quantity}))
