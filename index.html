@@ -681,6 +681,20 @@ async function checkout(){
  const paymentMethod=document.getElementById("pay").value;let order={name,phone:ph,province:document.getElementById("province").value,area,landmark,pay:paymentMethod,items,subtotal,shipping,total:subtotal+shipping,status:paymentMethod==="تحويل MasterCard"?"بانتظار تأكيد الدفع":"جديد",paymentConfirmed:paymentMethod!=="تحويل MasterCard",deliveryStarted:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
  try{
    const orderRef=await db.collection("orders").add(order);
+   try{
+     await fetch("https://calm-disk-195c.ahmedllp26.workers.dev/",{
+       method:"POST",
+       headers:{"Content-Type":"application/json"},
+       body:JSON.stringify({
+         orderId:orderRef.id,
+         total:order.total,
+         province:order.province,
+         items:order.items.map(item=>({name:item.name,quantity:item.quantity}))
+       })
+     });
+   }catch(notificationError){
+     console.error("Telegram notification failed:",notificationError);
+   }
    const waButton=document.getElementById("whatsappPaymentConfirm");
    if(paymentMethod==="تحويل MasterCard"){
      const waNumber="9647735905076";
