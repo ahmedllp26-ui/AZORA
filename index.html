@@ -438,6 +438,31 @@ html{scroll-behavior:smooth}body{background:var(--az-paper)!important;color:var(
 }
 @media(max-width:380px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.product .pic{height:130px!important}.hero h1{font-size:34px!important}}
 </style>
+
+<style id="azora-compact-home-cards">
+/* Compact product cards on AZORA home page */
+#products.grid{grid-template-columns:repeat(auto-fill,minmax(178px,1fr))!important;gap:12px!important}
+#products .product{border-radius:15px!important}
+#products .product .pic{height:158px!important;margin:7px 7px 0!important;border-radius:11px!important}
+#products .product .pbody{padding:9px 10px 11px!important}
+#products .product .pbody h3{font-size:14px!important;line-height:1.45!important;margin:0 0 3px!important}
+#products .product .muted{font-size:11px!important}
+#products .product .price{font-size:15px!important;margin-top:6px!important}
+#products .product .pfoot{gap:7px!important;margin-top:9px!important;flex-wrap:wrap!important}
+#products .product .pfoot .badge{font-size:10px!important;padding:4px 7px!important}
+#products .product .pfoot button{font-size:11px!important;padding:8px 10px!important;border-radius:9px!important}
+@media(max-width:600px){
+ #products.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ #products .product .pic{height:126px!important;margin:6px 6px 0!important}
+ #products .product .pbody{padding:8px!important}
+ #products .product .pbody h3{font-size:12px!important;line-height:1.4!important}
+ #products .product .price{font-size:13px!important}
+ #products .product .pfoot{gap:5px!important;margin-top:7px!important}
+ #products .product .pfoot button{width:100%!important;padding:7px 5px!important;font-size:10px!important}
+ #products .product .pfoot .badge{font-size:9px!important}
+}
+</style>
+
 </head>
 <body>
 <div id="managerGate" class="hidden">
